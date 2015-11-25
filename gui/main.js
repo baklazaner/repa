@@ -8,7 +8,7 @@ function openFile(){
 function folderSelected(path){
 	
 	var shell = require('shelljs');
-	var analyzer = shell.exec('Rscript R/analyze.R -f ' + path, {async: true});
+	var analyzer = shell.exec('python scripts/analyze.py -f ' + path, {async: true});
 	analyzer.stdout.on('data', displayResult );
 	analyzer.stderr.on('data', errorHandler );
 

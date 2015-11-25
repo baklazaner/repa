@@ -19,14 +19,14 @@ getPath <- function(){
 
 processFile <- function(path){
     
-    THRESH_HOLD <- 10
+    CUTOFF <- 10
     
     connection <- file(path, open = 'r')
     linn <- readLines(connection)
     
     superClustersLinks <- new.env(hash = TRUE, parent = emptyenv())
     nodes <- new.env(hash = TRUE, parent = emptyenv())
-   
+    sizes <- new.env(hash = TRUE, parent = emptyenv())
     
     for(i in 1:length(linn)){
         
@@ -35,7 +35,7 @@ processFile <- function(path){
         
         strength <- as.numeric(link[3])
         
-        if(strength > THRESH_HOLD ){
+        if(strength > CUTOFF ){
             # print(link)
             
             cluster1 <- link[1]
@@ -44,28 +44,117 @@ processFile <- function(path){
             # get only link with different clusters 
             if(cluster1 != cluster2){            
                 if( is.null(superClustersLinks[[cluster1]])){                                
-                    superClustersLinks[[cluster1]] <- new.env(hash = TRUE, parent = emptyenv())
+                    superClustersLinks[[cluster1]] <- new.env(hash = TRUE, parent =   emptyenv())
                 }
                 
                 if( is.null(nodes[[cluster1]]) ){
-                    nodes[[cluster1]] <- T
+                    nodes[[cluster1]] <- TRUE
                 }
                 
                 if( is.null(nodes[[cluster2]])){
-                    nodes[[cluster2]] <- T
+                    nodes[[cluster2]] <- TRUE
                 }
                 
                 superClustersLinks[[cluster1]][[cluster2]] <- strength
+            } else{
+                sizes[[cluster1]] <- strength
             }
         }
     }
     
     close(connection)
     
-    return(list( links = superClustersLinks, nodes = nodes ))
+    return(list( links = superClustersLinks, nodes = nodes, sizes = sizes ))
 }
 
-displaySuperClusters <- function(superClusters, nodes){
+identifyClusters <- function(links){
+
+    superClusters <- c() # vector   
+
+    for(l in ls(links)){
+        link <- ls(links[[l]])
+        for(h in link){
+
+            print('--------------------------------')
+            print('l & h ')
+            print(l)
+            print(h)
+
+            node1 <- l
+            node2 <- h
+
+           
+            print(length(superClusters))
+            print('adding to new')
+            print(node1)
+
+            if( length(superClusters) == 0 ){
+              
+                print('empty list')
+                # empty list
+                # create new super cluster and add new element
+                
+                nodeList <-  new.env(hash = TRUE, parent = emptyenv())
+                nodeList[[node1]] <- TRUE
+                nodeList[[node2]] <- TRUE
+                superClusters <- c( superClusters, nodeList)    
+                print(length(superClusters))
+
+                # superClusters[[index]] <- new.env(hash = TRUE, parent = emptyenv())
+                # superClusters[[index]][[node1]] <- TRUE
+                # superClusters[[index]][[node2]] <- TRUE
+                
+                
+
+            } else {
+                print('non empty list')
+
+                for(j in 1:(length(superClusters)-1)) {
+                    nList <- superClusters[j]
+
+                    found <- FALSE
+                    print(nList)
+
+                    # for(n in ls(nList)){
+                    #     if(n == node1 || n == node2){
+                    #         print('found match')
+                    #         nList[[node1]] <- TRUE
+                    #         nList[[node2]] <- TRUE
+                    #         found <- TRUE
+                    #     }
+                    # }
+
+                    if(found){
+                        print('founded')                        
+                    } else {
+                        print('not found')
+                    }
+
+
+
+                } 
+               
+
+                    # for(n in ls(nodes)) {
+                    #     if(node1 == n){
+                    #         return(TRUE)
+                    #     }
+                       
+                    # }
+
+                    # we didnt find match
+                    # create new cluster with this node
+                    # index <- toString( length(ls(superClusters)) + 1 )
+                    # superClusters[[index]] <- new.env(hash = TRUE, parent = emptyenv())
+                    # superClusters[[index]][[node]] <- TRUE
+            }    
+
+            
+        }
+    }
+}
+
+displaySuperClusters <- function(superClusters, nodes, sizes){
     
     index <- 0
     
@@ -74,7 +163,8 @@ displaySuperClusters <- function(superClusters, nodes){
     for(k in ls(nodes) ){         
         nodes[[k]] <- index
         index <- index + 1
-        node <- paste('{\"name\":\"',k,'",\"group\":',index,' },\n')
+        size <- sizes[[k]]
+        node <- paste('{\"name\":\"',k,'",\"group\":',index,', \"size\":',size,' },\n')
         json <- paste(json, node)
     }
     
@@ -106,9 +196,11 @@ saveToFile <- function(name, json){
 
 main <- function(){    
     # start here
+    print('Start !')
     path <- getPath()
     process <- processFile(path)
-    json <- displaySuperClusters(process$links, process$nodes )
+    json <- displaySuperClusters(process$links, process$nodes, process$sizes )
+    identifyClusters(process$links)
     saveToFile('output/clusters.json', json)
     print("Done")
 }
