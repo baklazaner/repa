@@ -2,6 +2,7 @@
   "name": "electron-quick-start",
   "version": "1.0.0",
   "description": "A minimal Electron application",
+  "companyName": "VUT Brno",
   "main": "main.js",
   "scripts": {
     "start": "electron main.js"
@@ -23,6 +24,11 @@
   },
   "homepage": "https://github.com/atom/electron-quick-start#readme",
   "devDependencies": {
-    "electron-prebuilt": "^0.34.0"
+    "electron-prebuilt": "^0.34.0",
+    "electron-json-storage": "^2.0.0"
+  },
+  "dependencies": {
+    "csv": "^0.4.6",
+    "electron-json-storage": "^2.0.0"
   }
 }

@@ -1,9 +1,6 @@
 var app = require('app');  // Module to control application life.
 var BrowserWindow = require('browser-window');  // Module to create native browser window.
 
-// Report crashes to our server.
-require('crash-reporter').start();
-
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 var mainWindow = null;
@@ -20,15 +17,19 @@ app.on('window-all-closed', function() {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 app.on('ready', function() {
+  
   // Create the browser window.
   mainWindow = new BrowserWindow({
       width: 1200, 
       height: 920,
-      resizable: true
+      resizable: true,
+      title: 'REPA'
   });
+  
+  mainWindow.maximize();
 
   // and load the index.html of the app.
-  mainWindow.loadUrl('file://' + __dirname + '/gui/index.html');  
+  mainWindow.loadURL('file://' + __dirname + '/app/build/index.html');  
   
   // Emitted when the window is closed.
   mainWindow.on('closed', function() {
@@ -38,3 +39,12 @@ app.on('ready', function() {
     mainWindow = null;
   });
 });
+
+exports.myRefresh = function(){
+  return {
+    refresh: function(){
+      console.log('refreshing from main.js');
+      mainWindow.loadURL('file://' + __dirname + '/app/build/index.html');
+    }
+  }
+}

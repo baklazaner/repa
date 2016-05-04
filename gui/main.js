@@ -1,12 +1,20 @@
-var remote = require('remote');
-var dialog = remote.require('dialog');
+const dialog = require('remote/dialog');
 
 function openFile(){
 	dialog.showOpenDialog({ properties: ['openDirectory']}, folderSelected);
 }  
 
 function folderSelected(path){
+    
+    console.log('calling folderSelected');
 	
+    if(!path){
+        console.error('no path selected');
+        return;
+    }
+    
+    console.log('path:', path);
+    
 	var shell = require('shelljs');
 	var analyzer = shell.exec('python scripts/analyze.py -f ' + path, {async: true});
 	analyzer.stdout.on('data', displayResult );
