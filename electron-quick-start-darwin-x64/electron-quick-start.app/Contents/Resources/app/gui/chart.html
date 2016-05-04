@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<body>
+   <script type="text/javascript" src="scripts/clusters.js"></script>
+  <div class="left">
+	  <button onclick="window.location='index.html'"><- Back</button>
+	  <button onclick="saveSvg()">Save Diagram</button>
+	  <br clear="all" />
+	  <svg id="chart"></svg>
+  </div>
+	<div class="right">
+		<h2> Detected Clusters </h2>
+	  <table>
+	  	<thead>
+		  	<tr>
+		  		<td style="width: 70px;">Cluster</td><td>Nodes</td>
+		  	</tr>
+	  	</thead>
+	  	<tbody id="table-content">	  		
+	  	</tbody>
+	  </table>
+  </div>	
+  <script type="text/javascript" src="scripts/saveSvgAsPng.js"></script>
+  <script type="text/javascript" src="scripts/d3.js"></script>
+  <script type="text/javascript" src="scripts/d3.tip.v0.6.3.js"></script>
+  <script type="text/javascript" src="scripts/chart.js"></script>
+</body>
+</html>

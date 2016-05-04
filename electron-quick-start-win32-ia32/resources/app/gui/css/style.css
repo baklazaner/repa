@@ -1,0 +1,75 @@
+@import url("font-awesome.css");
+
+html {
+	font-family: 'FontAwesome';
+}
+
+
+text {
+    font: 1rem helvetica;
+    stroke: #FFF;
+    stroke-width: 1px;
+    stroke-linecap: butt;
+    stroke-linejoin: miter;
+    fill: black;
+}
+
+
+.d3-tip {
+    background-color: white;
+    border: 1px #CCC solid;
+    border-radius: 2px;
+    line-height: 1;
+    padding: 3px;
+    color: black;
+    font-weight: 900;
+}
+
+
+.node {
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+
+.link {
+  stroke: #999;
+  stroke-opacity: .6;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+table {
+  width: 350px;
+}
+
+tr {
+  padding: 2px; 
+}
+
+td {
+   padding-left: 10px;
+}
+
+td button {
+  min-width: 60px;
+}
+
+thead {
+  font-weight: bold;
+}
+
+tr.dark {
+  background-color: #EEE;
+}
+
+svg {
+  border: 1px solid #CCC;
+}
+
