@@ -26,6 +26,8 @@
   },
   "dependencies": {
     "csv": "^0.4.6",
-    "electron-json-storage": "^2.0.0"
+    "electron-json-storage": "^2.0.0",
+    "shell": "^0.3.2",
+    "shelljs": "^0.7.0"
   }
 }
