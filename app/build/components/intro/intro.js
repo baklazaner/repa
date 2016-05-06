@@ -36,12 +36,10 @@ System.register("components/intro/intro", ["angular2/core", "angular2/router", "
       remote = require('remote');
       dialog = remote.require('dialog');
       storage = remote.require('electron-json-storage');
-      app = remote.require('app');
       Intro = function() {
         function Intro(zone, router) {
           var $__3 = this;
           console.info('Intro Component Mounted Successfully');
-          console.info('user data dir', app.getPath('userData'));
           this.threshold = 10;
           this.zone = zone;
           this.router = router;

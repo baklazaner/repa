@@ -1,6 +1,8 @@
 var app = require('app');  // Module to control application life.
 var BrowserWindow = require('browser-window');  // Module to create native browser window.
 
+// require('electron-debug')({showDevTools: true});
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 var mainWindow = null;
@@ -26,8 +28,9 @@ app.on('ready', function() {
       title: 'REPA'
   });
   
-  mainWindow.maximize();
-
+  // mainWindow.maximize();
+  mainWindow.toggleDevTools();
+  
   // and load the index.html of the app.
   mainWindow.loadUrl('file://' + __dirname + '/app/build/index.html');  
   
@@ -39,6 +42,8 @@ app.on('ready', function() {
     mainWindow = null;
   });
 });
+
+
 
 exports.myRefresh = function(){
   return {
