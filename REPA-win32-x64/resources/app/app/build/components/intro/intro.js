@@ -1,9 +1,10 @@
 System.register("components/intro/intro", ["angular2/core", "angular2/router", "DataMining/Analyzer", "DataMining/SummaryTable", "DataMining/Classification", "DataMining/SmartPath", "DataMining/Result"], function($__export) {
   "use strict";
   var remote,
-      dialog,
-      storage,
       app,
+      dialog,
+      electron,
+      storage,
       Component,
       View,
       NgZone,
@@ -34,9 +35,11 @@ System.register("components/intro/intro", ["angular2/core", "angular2/router", "
     }],
     execute: function() {
       remote = require('remote');
-      dialog = remote.require('dialog');
-      storage = remote.require('electron-json-storage');
       app = remote.require('app');
+      dialog = remote.require('dialog');
+      electron = require('electron');
+      electron.app = app;
+      storage = remote.require('electron-json-storage');
       Intro = function() {
         function Intro(zone, router) {
           var $__3 = this;

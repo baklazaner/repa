@@ -21,8 +21,6 @@
   },
   "homepage": "https://github.com/atom/electron-quick-start#readme",
   "devDependencies": {
-    "electron": "^0.4.1",
-    "electron-json-storage": "^2.0.0",
     "electron-prebuilt": "^0.34.0"
   },
   "dependencies": {
