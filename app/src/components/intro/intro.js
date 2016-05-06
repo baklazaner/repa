@@ -1,7 +1,10 @@
 const remote = require('remote');
-const dialog = remote.require('dialog');
-const storage = remote.require('electron-json-storage');
 const app = remote.require('app'); 
+const dialog = remote.require('dialog');
+const electron = require('electron');
+electron.app = app;
+const storage = remote.require('electron-json-storage');
+
 
 
 import {Component, View, NgZone } from 'angular2/core';
