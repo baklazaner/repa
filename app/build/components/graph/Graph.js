@@ -169,9 +169,7 @@ System.register("components/graph/Graph", ["angular2/core", "DataMining/Result",
                     return [];
                   } else {
                     if (d.node && d.node.info) {
-                      return d.node.info.filter(function(info) {
-                        return settings.info.priorityKeys.indexOf(info.key) >= 0;
-                      });
+                      return [d.node.repeatMasker.hits[0]];
                     } else {
                       return [];
                     }
@@ -179,7 +177,7 @@ System.register("components/graph/Graph", ["angular2/core", "DataMining/Result",
                 }).enter().append('text').attr('y', function(d, i) {
                   return i * 20;
                 }).text(function(d, i) {
-                  return d.value;
+                  return d.key;
                 });
                 drag.on('dragstart', function(d) {
                   console.log('dragstart extended');

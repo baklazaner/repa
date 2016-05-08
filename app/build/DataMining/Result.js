@@ -90,6 +90,7 @@ System.register("DataMining/Result", [], function($__export) {
                     size: nodes[name],
                     group: group,
                     info: this.clusterInfo[name],
+                    repeatMasker: this.repeatMasker[group],
                     fixed: false
                   });
                   nodeOrder[name] = i;

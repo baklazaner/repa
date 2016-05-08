@@ -128,13 +128,14 @@ export class Result {
             for(var name in nodes){
                 // get cluster index, and call it a group                
                 var group = nodeToCluster[name];
-                if(group !== undefined/*this.clusterInfo[name]['number of reads'] > 5*/){                
+                if(group !== undefined){                
                     // create graph node
                     this.graph.nodes.push({
                         name: name,
                         size: nodes[name],
                         group: group,
                         info: this.clusterInfo[name], 
+                        repeatMasker: this.repeatMasker[group],
                         fixed: false                                       
                     });
                     

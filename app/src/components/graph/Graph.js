@@ -140,8 +140,7 @@ export class Graph {
                 links: filteredLinks
             }, true);
             
-            // zoom.scale(1);
-            // zoom.on();
+           
         }
 
         this.renderData = renderData;
@@ -281,9 +280,10 @@ export class Graph {
                                 return [];
                             } else {
                                 if(d.node && d.node.info){                                
-                                    return d.node.info.filter( (info) => {
-                                        return settings.info.priorityKeys.indexOf(info.key) >= 0;
-                                    });
+                                    // return d.node.info.filter( (info) => {
+                                    //     return settings.info.priorityKeys.indexOf(info.key) >= 0;
+                                    // });
+                                    return [d.node.repeatMasker.hits[0]];
                                 } else {
                                     return [];
                                 }
@@ -292,7 +292,7 @@ export class Graph {
                     .enter()
                     .append('text')
                         .attr('y', function(d,i){ return i*20; }) // height of a text
-                        .text( function(d,i){ return d.value; });
+                        .text( function(d,i){ return d.key; /* + '(' + d.percentage + ')'; */ });
                         
                  drag.on('dragstart', function(d) {
                      console.log('dragstart extended');

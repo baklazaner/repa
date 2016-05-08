@@ -121,10 +121,10 @@ System.register("components/intro/intro", ["angular2/core", "angular2/router", "
               var clusterInfo = values[1];
               var classification = values[2];
               var rmTable = values[3];
+              perResult.setRepeatMasker(rmTable);
               perResult.setClassification(classification);
               perResult.setResult(result);
               perResult.setClusterInfo(clusterInfo);
-              perResult.setRepeatMasker(rmTable);
               console.log('DataMining', values);
               $__3.updateLoading(false);
               $__3.router.parent.navigate(['Graph']);

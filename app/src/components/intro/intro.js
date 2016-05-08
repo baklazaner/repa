@@ -122,11 +122,11 @@ export class Intro {
                 var classification = values[2];
                 var rmTable = values[3];
                 
+                 perResult.setRepeatMasker(rmTable);
                 perResult.setClassification(classification);
                 perResult.setResult(result);
                 perResult.setClusterInfo(clusterInfo);
-                perResult.setRepeatMasker(rmTable);
-                
+               
                 console.log('DataMining', values);
                 
                 this.updateLoading(false);   
