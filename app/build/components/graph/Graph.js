@@ -75,7 +75,7 @@ System.register("components/graph/Graph", ["angular2/core", "DataMining/Result",
             this.graph = result.getGraphData();
             tick = renderData(this.graph, false);
             function createLinkColor() {
-              var strengthColor = d3.interpolateRgb('#0000FF', '#FFFF00');
+              var strengthColor = d3.interpolateRgb('#0000FF', '#FF0000');
               var strength = d3.scale.log().range(settings.strength.range).domain(settings.strength.domain);
               return function(value) {
                 var s = strength(value);
@@ -179,7 +179,7 @@ System.register("components/graph/Graph", ["angular2/core", "DataMining/Result",
                 }).enter().append('text').attr('y', function(d, i) {
                   return i * 20;
                 }).text(function(d, i) {
-                  return d.key + ': ' + d.value;
+                  return d.value;
                 });
                 drag.on('dragstart', function(d) {
                   console.log('dragstart extended');

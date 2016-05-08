@@ -15,6 +15,7 @@ import {SummaryTable} from 'DataMining/SummaryTable';
 import {Classification} from 'DataMining/Classification';
 import {SmartPath} from 'DataMining/SmartPath';
 import {Result} from 'DataMining/Result';
+import {RepeatMasker} from 'DataMining/RepeatMasker';
 
 
 @Component({
@@ -93,7 +94,8 @@ export class Intro {
         const pathToST = smartPath.getSummaryTablePath();
         const pathToCLSV = smartPath.getClassificationPath();
         const pathToSummary = smartPath.getSummaryPath();
-        console.log('path To CLSV', pathToCLSV);
+        const pathToRM = smartPath.getRMPath();
+       
         
         // only update history on successful search
         if(pathToCC){
@@ -109,17 +111,21 @@ export class Intro {
         const perResult = Result.getInstance();
         perResult.setSummaryPath(pathToSummary);
         
+        const rm = new RepeatMasker(pathToRM);
+        
         Promise.all([
-            analyzer.process(), summary.process(), classification.process()
+            analyzer.process(), summary.process(), classification.process(), rm.process()
             ]).then( (values) =>{
                 
                 var result = values[0];
                 var clusterInfo = values[1];
                 var classification = values[2];
+                var rmTable = values[3];
                 
                 perResult.setClassification(classification);
                 perResult.setResult(result);
                 perResult.setClusterInfo(clusterInfo);
+                perResult.setRepeatMasker(rmTable);
                 
                 console.log('DataMining', values);
                 

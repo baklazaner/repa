@@ -23,6 +23,7 @@ System.register("DataMining/Result", [], function($__export) {
           this.summaryPath;
           this.superClusters = [];
           this.classification;
+          this.repeatMasker;
         }
         return ($traceurRuntime.createClass)(Result, {
           setResult: function(result) {
@@ -59,7 +60,10 @@ System.register("DataMining/Result", [], function($__export) {
                   clusters: []
                 };
               }
-              $__5.superClusters[index].clusters.push({name: info.cluster});
+              $__5.superClusters[index].clusters.push({
+                name: info.cluster,
+                size: info['number of reads']
+              });
             });
             console.log('filtered', filtered);
             console.log('superClusters', this.superClusters);
@@ -123,6 +127,12 @@ System.register("DataMining/Result", [], function($__export) {
           },
           getSummaryPath: function() {
             return this.summaryPath;
+          },
+          setRepeatMasker: function(data) {
+            this.repeatMasker = data;
+          },
+          getRepeatMasker: function() {
+            return this.repeatMasker;
           }
         }, {getInstance: function() {
             if (!Result.instance) {

@@ -28,6 +28,9 @@ System.register("DataMining/SmartPath", [], function($__export) {
           },
           getSummaryPath: function() {
             return this.getAnyFilePath(/summary$/);
+          },
+          getRMPath: function() {
+            return this.getAnyFilePath(/RM_output_tablesummary.csv/);
           }
         }, {});
       }();

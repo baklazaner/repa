@@ -4,6 +4,11 @@
 	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Open Sans","Helvetica Neue",sans-serif;
 }
 
+h1 {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
 button {
   font-size: 14px;
   height: 37px;
@@ -91,12 +96,19 @@ text {
 }
 
 .right {
+  margin-top: -60px;
   padding-left: 10px;
+  padding-right: 10px;
   float: left;
 }
 
 .detail {
   width: 780px;
+  margin-bottom: 60px;
+}
+
+.clusters {
+  margin-bottom: 60px;
 }
 
 
@@ -130,4 +142,8 @@ svg {
   text-transform: capitalize;
   font-weight: bold;
   width: 450px;
+}
+
+.detail table {
+  width: 780px;
 }

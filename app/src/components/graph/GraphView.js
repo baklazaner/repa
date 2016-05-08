@@ -35,38 +35,55 @@ export class MyDear {
                 <button (click)="back()">Back</button>
                 <h3 *ngIf="inDetail" >{{detailInfo[0].value}} Detail</h3>
                 <img src="{{imgSrc}}" alt="cluster layout "/>
+                <h3>Summary</h3>
                 <table>
                     <tr *ngFor="#info of detailInfo; #i = index" [ngStyle]="{'background-color':bgColor(i) }">
                         <td class="key">{{info.key}}</td><td>{{info.value}}</td>
                     </tr>
                 </table>
+                <h3>Summary of RepeatMasker hits</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <td>Class.Family</td><td>hits</td><td>hits[%]</td>
+                        </tr>
+                    </thead> 
+                    <tbody>   
+                        <tr *ngFor="#rm of repeatMasker; #i = index" [ngStyle]="{'background-color':bgColor(i) }">
+                            <td>{{rm.key}}</td><td>{{rm.value}}</td><td>{{rm.percentage | number:'.1' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
-        <div class="right" *ngIf="extended">
+        <div class="right clusters" *ngIf="extended">
         <h3>Clusters details</h3>
         <table>
+            <tr>
+                <td>Name (number of reads)</td>
+            </tr>
             <tr *ngFor="#node of superCluster.clusters;">
-                <td><button (click)="detail(node.name)">{{node.name}}</button></td>
+                <td><button (click)="detail(node.name)"><b>{{node.name}}</b> ({{node.size}}) </button></td>
             </tr>
         </table>
         </div>
-        <br clear="all"/>        
-        <h3>SuperClusters</h3>
-        <table class="groups">
-            <thead>
-                <tr>
-                    <td>Select</td><td>Size</td><td>Classification</td>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="#group of groups; #i = index">
-                   <td><button (click)="focus(i)" [ngStyle]="{'background-color': color(i) }"><b>SuperCluster{{i}}</b></button></td>
-                   <td>{{group.clusters.length}}</td> 
-                   <td>{{group.classification[0].classification}}</td>
-                </tr>
-            </tbody>
-        </table>
-        <my-dear #dear></my-dear>    
+        <div class="right">  
+            <h3>SuperClusters</h3>
+            <table class="groups">
+                <thead>
+                    <tr>
+                        <td></td><td>Size</td><td>Classification</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="#group of groups; #i = index">
+                    <td><button (click)="focus(i)" [ngStyle]="{'background-color': color(i) }"><b>SuperCluster{{i+1}}</b></button></td>
+                    <td>{{group.clusters.length}}</td> 
+                    <td>{{group.classification[0].classification}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     `,
     
 })
@@ -82,6 +99,7 @@ export class GraphView {
     superCluster: any;
     detailInfo: any;
     imgSrc: string;
+    repeatMasker: any;
     
     constructor(zone: NgZone){
         
@@ -104,6 +122,8 @@ export class GraphView {
         
         window.dispatch.on('focus.view', (clusterIndex) => {
             console.log('focusing', clusterIndex);   
+            
+            
              
             this.zone.run( () => {
                 
@@ -139,6 +159,7 @@ export class GraphView {
     detail(clusterN){
         console.log('Showing detail about', clusterN);
         
+        const settings = Settings.default();
          
         const result = Result.getInstance();
         const clusterInfo = result.getClusterInfo();
@@ -152,9 +173,28 @@ export class GraphView {
         
         this.imgSrc = summaryPath + '/' + format + '/graphLayout.png';
         
-        this.detailInfo = clusterInfo[clusterN];
+        
+        
+        this.detailInfo = filterDetailInfo(clusterN);
+        this.repeatMasker = result.getRepeatMasker()[postfix-1].hits;
+        console.log('repeatMasker', this.repeatMasker);
         this.inDetail = true;
+        
+        
+        function filterDetailInfo(clusterN){
+            
+            
+            
+            var detailInfo = clusterInfo[clusterN];
+            console.log('detail info', detailInfo);
+            return detailInfo.filter( (info) => {
+                return settings.info.detailKeys.indexOf(info.key) >= 0;
+            });
+            
+        }
     }
+    
+    
     
     bgColor(i){
         if(i%2){

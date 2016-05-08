@@ -1,4 +1,4 @@
-System.register("components/intro/intro", ["angular2/core", "angular2/router", "DataMining/Analyzer", "DataMining/SummaryTable", "DataMining/Classification", "DataMining/SmartPath", "DataMining/Result"], function($__export) {
+System.register("components/intro/intro", ["angular2/core", "angular2/router", "DataMining/Analyzer", "DataMining/SummaryTable", "DataMining/Classification", "DataMining/SmartPath", "DataMining/Result", "DataMining/RepeatMasker"], function($__export) {
   "use strict";
   var remote,
       app,
@@ -14,6 +14,7 @@ System.register("components/intro/intro", ["angular2/core", "angular2/router", "
       Classification,
       SmartPath,
       Result,
+      RepeatMasker,
       Intro;
   return {
     setters: [function($__m) {
@@ -32,6 +33,8 @@ System.register("components/intro/intro", ["angular2/core", "angular2/router", "
       SmartPath = $__m.SmartPath;
     }, function($__m) {
       Result = $__m.Result;
+    }, function($__m) {
+      RepeatMasker = $__m.RepeatMasker;
     }],
     execute: function() {
       remote = require('remote');
@@ -102,7 +105,7 @@ System.register("components/intro/intro", ["angular2/core", "angular2/router", "
             var pathToST = smartPath.getSummaryTablePath();
             var pathToCLSV = smartPath.getClassificationPath();
             var pathToSummary = smartPath.getSummaryPath();
-            console.log('path To CLSV', pathToCLSV);
+            var pathToRM = smartPath.getRMPath();
             if (pathToCC) {
               this.updateHistory(path);
             }
@@ -112,13 +115,16 @@ System.register("components/intro/intro", ["angular2/core", "angular2/router", "
             analyzer.setThreshold(this.threshold);
             var perResult = Result.getInstance();
             perResult.setSummaryPath(pathToSummary);
-            Promise.all([analyzer.process(), summary.process(), classification.process()]).then(function(values) {
+            var rm = new RepeatMasker(pathToRM);
+            Promise.all([analyzer.process(), summary.process(), classification.process(), rm.process()]).then(function(values) {
               var result = values[0];
               var clusterInfo = values[1];
               var classification = values[2];
+              var rmTable = values[3];
               perResult.setClassification(classification);
               perResult.setResult(result);
               perResult.setClusterInfo(clusterInfo);
+              perResult.setRepeatMasker(rmTable);
               console.log('DataMining', values);
               $__3.updateLoading(false);
               $__3.router.parent.navigate(['Graph']);

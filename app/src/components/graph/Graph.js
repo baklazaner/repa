@@ -99,7 +99,7 @@ export class Graph {
         tick = renderData(this.graph, false);
         
         function createLinkColor() {
-            var strengthColor = d3.interpolateRgb('#0000FF', '#FFFF00');
+            var strengthColor = d3.interpolateRgb('#0000FF', '#FF0000');
             var strength = d3.scale.log()
                 .range(settings.strength.range)
                 .domain(settings.strength.domain);
@@ -291,8 +291,8 @@ export class Graph {
                     })
                     .enter()
                     .append('text')
-                        .attr('y', function(d,i){ return i*20; })
-                        .text( function(d,i){ return d.key + ': ' + d.value; });
+                        .attr('y', function(d,i){ return i*20; }) // height of a text
+                        .text( function(d,i){ return d.value; });
                         
                  drag.on('dragstart', function(d) {
                      console.log('dragstart extended');
@@ -324,7 +324,7 @@ export class Graph {
            
             function updateLink (){
                 
-                var threshold = 2.3;
+                var threshold = 2.3; // zoom threshold
                 
                 this.attr('x1', function(d) { return d.source.x; })
                     .attr('y1', function(d) { return d.source.y; })

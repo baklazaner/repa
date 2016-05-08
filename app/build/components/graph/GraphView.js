@@ -83,6 +83,7 @@ System.register("components/graph/GraphView", ["angular2/core", "angular2/common
           },
           detail: function(clusterN) {
             console.log('Showing detail about', clusterN);
+            var settings = Settings.default();
             var result = Result.getInstance();
             var clusterInfo = result.getClusterInfo();
             var summaryPath = result.getSummaryPath();
@@ -93,8 +94,17 @@ System.register("components/graph/GraphView", ["angular2/core", "angular2/common
             var format = prefix + ('0'.repeat(numberOfZeros - postfix.length)) + postfix;
             console.log('format', format);
             this.imgSrc = summaryPath + '/' + format + '/graphLayout.png';
-            this.detailInfo = clusterInfo[clusterN];
+            this.detailInfo = filterDetailInfo(clusterN);
+            this.repeatMasker = result.getRepeatMasker()[postfix - 1].hits;
+            console.log('repeatMasker', this.repeatMasker);
             this.inDetail = true;
+            function filterDetailInfo(clusterN) {
+              var detailInfo = clusterInfo[clusterN];
+              console.log('detail info', detailInfo);
+              return detailInfo.filter(function(info) {
+                return settings.info.detailKeys.indexOf(info.key) >= 0;
+              });
+            }
           },
           bgColor: function(i) {
             if (i % 2) {
@@ -110,7 +120,7 @@ System.register("components/graph/GraphView", ["angular2/core", "angular2/common
           return [new Component({
             selector: 'graph-view',
             directives: [Graph, MyDear, NgStyle],
-            template: "\n        <h2>Graph View</h2>\n        <div class=\"left\">\n            <graph [hidden]=\"inDetail\">\n                <button [hidden]=\"!extended\" (click)=\"reset()\" id=\"back\" > Back </button>\n            </graph>\n            <div [hidden]=\"!inDetail\" class=\"detail\">\n                <button (click)=\"back()\">Back</button>\n                <h3 *ngIf=\"inDetail\" >{{detailInfo[0].value}} Detail</h3>\n                <img src=\"{{imgSrc}}\" alt=\"cluster layout \"/>\n                <table>\n                    <tr *ngFor=\"#info of detailInfo; #i = index\" [ngStyle]=\"{'background-color':bgColor(i) }\">\n                        <td class=\"key\">{{info.key}}</td><td>{{info.value}}</td>\n                    </tr>\n                </table>\n            </div>\n        </div>\n        <div class=\"right\" *ngIf=\"extended\">\n        <h3>Clusters details</h3>\n        <table>\n            <tr *ngFor=\"#node of superCluster.clusters;\">\n                <td><button (click)=\"detail(node.name)\">{{node.name}}</button></td>\n            </tr>\n        </table>\n        </div>\n        <br clear=\"all\"/>        \n        <h3>SuperClusters</h3>\n        <table class=\"groups\">\n            <thead>\n                <tr>\n                    <td>Select</td><td>Size</td><td>Classification</td>\n                </tr>\n            </thead>\n            <tbody>\n                <tr *ngFor=\"#group of groups; #i = index\">\n                   <td><button (click)=\"focus(i)\" [ngStyle]=\"{'background-color': color(i) }\"><b>SuperCluster{{i}}</b></button></td>\n                   <td>{{group.clusters.length}}</td> \n                   <td>{{group.classification[0].classification}}</td>\n                </tr>\n            </tbody>\n        </table>\n        <my-dear #dear></my-dear>    \n    "
+            template: "\n        <h2>Graph View</h2>\n        <div class=\"left\">\n            <graph [hidden]=\"inDetail\">\n                <button [hidden]=\"!extended\" (click)=\"reset()\" id=\"back\" > Back </button>\n            </graph>\n            <div [hidden]=\"!inDetail\" class=\"detail\">\n                <button (click)=\"back()\">Back</button>\n                <h3 *ngIf=\"inDetail\" >{{detailInfo[0].value}} Detail</h3>\n                <img src=\"{{imgSrc}}\" alt=\"cluster layout \"/>\n                <h3>Summary</h3>\n                <table>\n                    <tr *ngFor=\"#info of detailInfo; #i = index\" [ngStyle]=\"{'background-color':bgColor(i) }\">\n                        <td class=\"key\">{{info.key}}</td><td>{{info.value}}</td>\n                    </tr>\n                </table>\n                <h3>Summary of RepeatMasker hits</h3>\n                <table>\n                    <thead>\n                        <tr>\n                            <td>Class.Family</td><td>hits</td><td>hits[%]</td>\n                        </tr>\n                    </thead> \n                    <tbody>   \n                        <tr *ngFor=\"#rm of repeatMasker; #i = index\" [ngStyle]=\"{'background-color':bgColor(i) }\">\n                            <td>{{rm.key}}</td><td>{{rm.value}}</td><td>{{rm.percentage | number:'.1' }}</td>\n                        </tr>\n                    </tbody>\n                </table>\n            </div>\n        </div>\n        <div class=\"right clusters\" *ngIf=\"extended\">\n        <h3>Clusters details</h3>\n        <table>\n            <tr>\n                <td>Name (number of reads)</td>\n            </tr>\n            <tr *ngFor=\"#node of superCluster.clusters;\">\n                <td><button (click)=\"detail(node.name)\"><b>{{node.name}}</b> ({{node.size}}) </button></td>\n            </tr>\n        </table>\n        </div>\n        <div class=\"right\">  \n            <h3>SuperClusters</h3>\n            <table class=\"groups\">\n                <thead>\n                    <tr>\n                        <td></td><td>Size</td><td>Classification</td>\n                    </tr>\n                </thead>\n                <tbody>\n                    <tr *ngFor=\"#group of groups; #i = index\">\n                    <td><button (click)=\"focus(i)\" [ngStyle]=\"{'background-color': color(i) }\"><b>SuperCluster{{i+1}}</b></button></td>\n                    <td>{{group.clusters.length}}</td> \n                    <td>{{group.classification[0].classification}}</td>\n                    </tr>\n                </tbody>\n            </table>\n        </div>\n    "
           })];
         }});
       Object.defineProperty(GraphView, "parameters", {get: function() {

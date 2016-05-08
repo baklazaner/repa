@@ -40,4 +40,8 @@ export class SmartPath {
     getSummaryPath(){
         return this.getAnyFilePath(/summary$/);
     }
+    
+    getRMPath(){
+        return this.getAnyFilePath(/RM_output_tablesummary.csv/)
+    }
 }

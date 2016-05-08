@@ -26,6 +26,7 @@ export class Result {
         this.summaryPath;
         this.superClusters = [];
         this.classification;
+        this.repeatMasker;
     }
     
     static getInstance(){
@@ -90,6 +91,7 @@ export class Result {
             
             this.superClusters[index].clusters.push({
                 name: info.cluster,
+                size: info['number of reads']
                 // info: info                
             });
             
@@ -185,6 +187,14 @@ export class Result {
     
     getSummaryPath(){
         return this.summaryPath;
+    }
+    
+    setRepeatMasker(data){
+        this.repeatMasker = data;
+    }
+    
+    getRepeatMasker(){
+        return this.repeatMasker;
     }
     
 } 

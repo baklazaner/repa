@@ -27,7 +27,10 @@ System.register("components/graph/Settings", [], function($__export) {
           zoomed: 1.5
         },
         color: d3.scale.category20(),
-        info: {priorityKeys: ['Automatic\nclassification', 'number of reads']}
+        info: {
+          priorityKeys: [],
+          detailKeys: ["cluster", "total length [bp]", "number of reads", "Genome proportion[%]", "Super cluster", "All missing mates [%]", "Missing mates with no similarity hit [%]", "Portion of similarity hits to other clusters[%]"]
+        }
       };
       Settings = function() {
         function Settings() {}
