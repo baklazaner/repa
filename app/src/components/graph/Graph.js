@@ -254,9 +254,9 @@ export class Graph {
                     .nodes(labelAnchors)
                     .links(labelAnchorLinks)
                     .gravity(0)
-                    .linkDistance(10)
+                    .linkDistance(20)
                     .linkStrength(8)
-                    .charge(-100)
+                    .charge(-150)
                     .size([ settings.width, settings.height ]);
                     
                 force2.start();

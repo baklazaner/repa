@@ -1,11 +1,13 @@
 System.register("DataMining/Result", [], function($__export) {
   "use strict";
-  var ResultData,
+  var domainHitsThreshold,
+      ResultData,
       GraphData,
       Result;
   return {
     setters: [],
     execute: function() {
+      domainHitsThreshold = 10;
       ResultData = function() {
         function ResultData() {}
         return ($traceurRuntime.createClass)(ResultData, {}, {});
@@ -138,6 +140,32 @@ System.register("DataMining/Result", [], function($__export) {
             return this.repeatMasker;
           },
           setDomains: function(data) {
+            var _ = require('underscore');
+            var sortedDomains = [];
+            data.forEach(function(domains) {
+              var res = undefined;
+              if (domains !== undefined) {
+                res = _.chain(domains).groupBy(function(d) {
+                  return d.Domain + '#' + d.Lineage;
+                }).map(function(d) {
+                  var hits = _.reduce(d, function(memo, obj) {
+                    return memo + parseInt(obj.Hits, 10);
+                  }, 0);
+                  if (hits >= domainHitsThreshold) {
+                    return {
+                      Domain: d[0].Domain,
+                      Lineage: d[0].Lineage,
+                      Hits: hits
+                    };
+                  } else {
+                    return null;
+                  }
+                }).without(null).value();
+                console.log('res', res);
+              }
+              sortedDomains.push(res);
+            });
+            console.log('sortedDomains', sortedDomains);
             this.domains = data;
           },
           getDomains: function() {

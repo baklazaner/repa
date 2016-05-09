@@ -1,3 +1,4 @@
+var domainHitsThreshold = 10; // min 10 hits, or domain is not registered
 
 class ResultData {
     // public connections: any;
@@ -201,6 +202,49 @@ export class Result {
     }
     
     setDomains(data){
+        
+        var _ = require('underscore');
+        var sortedDomains = [];
+        
+        data.forEach( (domains) => {
+            
+            var res = undefined;
+            
+            if(domains !== undefined ){
+                
+                res = _.chain(domains)
+                .groupBy(function(d){
+                    return d.Domain + '#' + d.Lineage;
+                })
+                .map(function(d){
+                    // console.log('map d',d);
+                    
+                    var hits = _.reduce(d, function(memo, obj){ 
+                            return memo + parseInt(obj.Hits, 10);
+                         }, 0);
+                    
+                    if(hits >= domainHitsThreshold){        
+                    
+                        return {
+                            Domain: d[0].Domain, 
+                            Lineage: d[0].Lineage,
+                            Hits: hits     
+                        };
+                    } else {
+                        return null;
+                    }
+                })
+                .without(null)
+                .value();
+                
+                console.log('res', res);
+            }
+            
+            sortedDomains.push(res);
+        });
+        
+        console.log('sortedDomains',sortedDomains);
+        
         this.domains = data;
     }
     

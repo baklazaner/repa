@@ -156,7 +156,7 @@ System.register("components/graph/Graph", ["angular2/core", "DataMining/Result",
                   });
                   i++;
                 });
-                var force2 = d3.layout.force().nodes(labelAnchors).links(labelAnchorLinks).gravity(0).linkDistance(10).linkStrength(8).charge(-100).size([settings.width, settings.height]);
+                var force2 = d3.layout.force().nodes(labelAnchors).links(labelAnchorLinks).gravity(0).linkDistance(20).linkStrength(8).charge(-150).size([settings.width, settings.height]);
                 force2.start();
                 force.on('start', function() {
                   force2.start();
