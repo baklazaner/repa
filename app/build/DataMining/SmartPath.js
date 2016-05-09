@@ -31,6 +31,9 @@ System.register("DataMining/SmartPath", [], function($__export) {
           },
           getRMPath: function() {
             return this.getAnyFilePath(/RM_output_tablesummary.csv/);
+          },
+          getBlastxPath: function() {
+            return this.getAnyFilePath(/seqClust\/clustering\/blastx$/);
           }
         }, {});
       }();

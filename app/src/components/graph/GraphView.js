@@ -54,6 +54,26 @@ export class MyDear {
                         </tr>
                     </tbody>
                 </table>
+                <div *ngIf="domains != undefined">
+                    <h3>Summary of TE domain hits from blastx</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>Domain</td><td>ID</td><td>Type</td><td>Lineage</td><td>Hits</td><td>MeanScore</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="#domain of domains;  #i = index" [ngStyle]="{'background-color':bgColor(i) }">
+                                <td>{{domain.Domain}}</td>
+                                <td>{{domain.ID}}</td>
+                                <td>{{domain.Type}}</td>
+                                <td>{{domain.Lineage}}</td>
+                                <td>{{domain.Hits}}</td>
+                                <td>{{domain.MeanScore}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
         <div class="right clusters" *ngIf="extended">
@@ -100,6 +120,7 @@ export class GraphView {
     detailInfo: any;
     imgSrc: string;
     repeatMasker: any;
+    domains: any;
     
     constructor(zone: NgZone){
         
@@ -173,11 +194,13 @@ export class GraphView {
         
         this.imgSrc = summaryPath + '/' + format + '/graphLayout.png';
         
+        var index = postfix-1;
         
         
         this.detailInfo = filterDetailInfo(clusterN);
-        this.repeatMasker = result.getRepeatMasker()[postfix-1].hits;
-        console.log('repeatMasker', this.repeatMasker);
+        this.repeatMasker = result.getRepeatMasker()[index].hits;
+        this.domains = result.getDomains()[index];
+       
         this.inDetail = true;
         
         

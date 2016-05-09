@@ -24,6 +24,7 @@ System.register("DataMining/Result", [], function($__export) {
           this.superClusters = [];
           this.classification;
           this.repeatMasker;
+          this.domains;
         }
         return ($traceurRuntime.createClass)(Result, {
           setResult: function(result) {
@@ -91,6 +92,7 @@ System.register("DataMining/Result", [], function($__export) {
                     group: group,
                     info: this.clusterInfo[name],
                     repeatMasker: this.repeatMasker[group],
+                    domains: this.domains ? this.domains[group] : undefined,
                     fixed: false
                   });
                   nodeOrder[name] = i;
@@ -134,6 +136,12 @@ System.register("DataMining/Result", [], function($__export) {
           },
           getRepeatMasker: function() {
             return this.repeatMasker;
+          },
+          setDomains: function(data) {
+            this.domains = data;
+          },
+          getDomains: function() {
+            return this.domains;
           }
         }, {getInstance: function() {
             if (!Result.instance) {

@@ -44,4 +44,8 @@ export class SmartPath {
     getRMPath(){
         return this.getAnyFilePath(/RM_output_tablesummary.csv/)
     }
+    
+    getBlastxPath(){
+        return this.getAnyFilePath(/seqClust\/clustering\/blastx$/);
+    }
 }

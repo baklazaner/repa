@@ -1,4 +1,4 @@
-System.register("components/intro/intro", ["angular2/core", "angular2/router", "DataMining/Analyzer", "DataMining/SummaryTable", "DataMining/Classification", "DataMining/SmartPath", "DataMining/Result", "DataMining/RepeatMasker"], function($__export) {
+System.register("components/intro/intro", ["angular2/core", "angular2/router", "DataMining/Analyzer", "DataMining/SummaryTable", "DataMining/Classification", "DataMining/SmartPath", "DataMining/Result", "DataMining/RepeatMasker", "DataMining/Blastx"], function($__export) {
   "use strict";
   var remote,
       app,
@@ -15,6 +15,7 @@ System.register("components/intro/intro", ["angular2/core", "angular2/router", "
       SmartPath,
       Result,
       RepeatMasker,
+      Blastx,
       Intro;
   return {
     setters: [function($__m) {
@@ -35,6 +36,8 @@ System.register("components/intro/intro", ["angular2/core", "angular2/router", "
       Result = $__m.Result;
     }, function($__m) {
       RepeatMasker = $__m.RepeatMasker;
+    }, function($__m) {
+      Blastx = $__m.Blastx;
     }],
     execute: function() {
       remote = require('remote');
@@ -106,6 +109,7 @@ System.register("components/intro/intro", ["angular2/core", "angular2/router", "
             var pathToCLSV = smartPath.getClassificationPath();
             var pathToSummary = smartPath.getSummaryPath();
             var pathToRM = smartPath.getRMPath();
+            var pathToBlastx = smartPath.getBlastxPath();
             if (pathToCC) {
               this.updateHistory(path);
             }
@@ -116,11 +120,14 @@ System.register("components/intro/intro", ["angular2/core", "angular2/router", "
             var perResult = Result.getInstance();
             perResult.setSummaryPath(pathToSummary);
             var rm = new RepeatMasker(pathToRM);
-            Promise.all([analyzer.process(), summary.process(), classification.process(), rm.process()]).then(function(values) {
+            var blastx = new Blastx(pathToBlastx);
+            Promise.all([analyzer.process(), summary.process(), classification.process(), rm.process(), blastx.process()]).then(function(values) {
               var result = values[0];
               var clusterInfo = values[1];
               var classification = values[2];
               var rmTable = values[3];
+              var blastxData = values[4];
+              perResult.setDomains(blastxData);
               perResult.setRepeatMasker(rmTable);
               perResult.setClassification(classification);
               perResult.setResult(result);

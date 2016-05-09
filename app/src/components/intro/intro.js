@@ -16,6 +16,7 @@ import {Classification} from 'DataMining/Classification';
 import {SmartPath} from 'DataMining/SmartPath';
 import {Result} from 'DataMining/Result';
 import {RepeatMasker} from 'DataMining/RepeatMasker';
+import {Blastx} from 'DataMining/Blastx';
 
 
 @Component({
@@ -95,7 +96,7 @@ export class Intro {
         const pathToCLSV = smartPath.getClassificationPath();
         const pathToSummary = smartPath.getSummaryPath();
         const pathToRM = smartPath.getRMPath();
-       
+        const pathToBlastx = smartPath.getBlastxPath(); 
         
         // only update history on successful search
         if(pathToCC){
@@ -113,16 +114,20 @@ export class Intro {
         
         const rm = new RepeatMasker(pathToRM);
         
+        const blastx = new Blastx(pathToBlastx);
+        
         Promise.all([
-            analyzer.process(), summary.process(), classification.process(), rm.process()
+            analyzer.process(), summary.process(), classification.process(), rm.process(), blastx.process()
             ]).then( (values) =>{
                 
                 var result = values[0];
                 var clusterInfo = values[1];
                 var classification = values[2];
                 var rmTable = values[3];
+                var blastxData = values[4];
                 
-                 perResult.setRepeatMasker(rmTable);
+                perResult.setDomains(blastxData);
+                perResult.setRepeatMasker(rmTable);
                 perResult.setClassification(classification);
                 perResult.setResult(result);
                 perResult.setClusterInfo(clusterInfo);

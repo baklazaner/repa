@@ -27,6 +27,7 @@ export class Result {
         this.superClusters = [];
         this.classification;
         this.repeatMasker;
+        this.domains;
     }
     
     static getInstance(){
@@ -136,6 +137,7 @@ export class Result {
                         group: group,
                         info: this.clusterInfo[name], 
                         repeatMasker: this.repeatMasker[group],
+                        domains: this.domains ? this.domains[group] : undefined,
                         fixed: false                                       
                     });
                     
@@ -196,6 +198,14 @@ export class Result {
     
     getRepeatMasker(){
         return this.repeatMasker;
+    }
+    
+    setDomains(data){
+        this.domains = data;
+    }
+    
+    getDomains(){
+        return this.domains;
     }
     
 } 

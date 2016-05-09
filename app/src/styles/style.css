@@ -146,4 +146,14 @@ svg {
 
 .detail table {
   width: 780px;
+  margin-bottom: 20px;
+}
+
+
+.detail h3 {
+  padding-left: 10px;
+  font-size: large;
+  margin-bottom: 0;
+  text-decoration: underline;
+  
 }
