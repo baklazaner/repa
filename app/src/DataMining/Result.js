@@ -29,6 +29,8 @@ export class Result {
         this.classification;
         this.repeatMasker;
         this.domains;
+        this.sortedDomains;
+        this.domainsByLineage;
     }
     
     static getInstance(){
@@ -139,6 +141,8 @@ export class Result {
                         info: this.clusterInfo[name], 
                         repeatMasker: this.repeatMasker[group],
                         domains: this.domains ? this.domains[group] : undefined,
+                        sortedDomains: this.sortedDomains[group],
+                        // doaminsByLineage: this.domainsByLineage[group],
                         fixed: false                                       
                     });
                     
@@ -205,6 +209,7 @@ export class Result {
         
         var _ = require('underscore');
         var sortedDomains = [];
+        var domainsByLineage = [];
         
         data.forEach( (domains) => {
             
@@ -217,7 +222,6 @@ export class Result {
                     return d.Domain + '#' + d.Lineage;
                 })
                 .map(function(d){
-                    // console.log('map d',d);
                     
                     var hits = _.reduce(d, function(memo, obj){ 
                             return memo + parseInt(obj.Hits, 10);
@@ -237,19 +241,41 @@ export class Result {
                 .without(null)
                 .value();
                 
-                console.log('res', res);
+                domainsByLineage.push(_.groupBy(res,'Lineage'));
+            } else {
+                domainsByLineage.push(undefined);
             }
             
             sortedDomains.push(res);
+           
         });
         
-        console.log('sortedDomains',sortedDomains);
+        console.log('sortedDomains', sortedDomains);
+        console.log('domainsByLineage', domainsByLineage);
         
         this.domains = data;
+        this.sortedDomains = sortedDomains;
+        this.domainsByLineage = domainsByLineage;
     }
     
     getDomains(){
         return this.domains;
+    }
+    
+    getSortedDomains(){
+        return this.sortedDomains;
+    }
+    
+    getDomainsByLineage(){
+        return this.domainsByLineage;
+    }
+    
+    getSpecificLineage(n){
+        var value = this.domainsByLineage[n];
+        if(!value){
+            return value;
+        }
+        return Object.keys(value).map( key => value[key] );
     }
     
 } 

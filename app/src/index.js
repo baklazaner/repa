@@ -7,14 +7,14 @@ import {ROUTER_PROVIDERS,RouteConfig, ROUTER_DIRECTIVES,APP_BASE_HREF,LocationSt
 
 // Repas
 import {Intro} from 'components/intro/intro';
-import {MyDear, GraphView} from 'components/graph/GraphView';
+import { GraphView} from 'components/graph/GraphView';
 
 
 
 
 @Component({
     selector: 'main',
-    directives: [Intro, ROUTER_DIRECTIVES, MyDear],
+    directives: [Intro, ROUTER_DIRECTIVES],
     template: `
         <h1>REPA</h1> 
         <nav>
@@ -22,7 +22,6 @@ import {MyDear, GraphView} from 'components/graph/GraphView';
             > <a [routerLink]="['Graph']">Graph</a>
             > <a [routerLink]="['Graph']">Export</a>
         </nav>
-        <mydear></mydear>   
         <hr>
         <router-outlet></router-outlet>
     `
@@ -34,20 +33,12 @@ import {MyDear, GraphView} from 'components/graph/GraphView';
     { path:'/graph', name: 'Graph', component: GraphView }    
 ])
 
-export class Main { 
-    @ViewChild(MyDear) mydear:MyDear;   
+export class Main {
     
     constructor(){
         console.log('App start');
         console.log('location.pathname',location.pathname);
     }
-    
-    refresh(){
-        console.log('Refreshing');
-        console.log('mydear', this.mydear);
-      
-    }
-    
 }
 
 bootstrap(Main, [

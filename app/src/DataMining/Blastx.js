@@ -4,9 +4,7 @@ require('events').EventEmitter.prototype._maxListeners = 200;
 var threshold = 5; // only 5 hits and above
 
 export class Blastx {
-    // RM stands for Repeat Masker
-    
-    
+   
     
     constructor(path){
         this.path = path;
@@ -19,8 +17,6 @@ export class Blastx {
     readFiles(path){
         
         console.log('blastx path', path);
-        
-        
         
         let promise = new Promise((resolve, reject) => {
            
@@ -36,10 +32,7 @@ export class Blastx {
             const csv = require('csv');
             const fs = require('fs');
             const async = require('async');
-            //    const shell = require('shelljs');
-            
-            //    var domains = shell.ls(path).filter( function(name){ return name.match(/domains/); });
-            //    console.log('domains', domains);
+    
             var domains = [];
             
             fs.readdir(path, function (err, files) {
@@ -83,22 +76,6 @@ export class Blastx {
                 } else {
                     filtered = data;
                 }
-
-                
-                // data.forEach( (line) => {
-                    
-                //     var a = [];
-                    
-                //     Object.keys(line).forEach( (key) => {
-                //         a.push({
-                //             key: key,
-                //             value: line[key]
-                //         });
-                //     });
-                    
-                //     filtered.push(a);
-                    
-                // });
                 
                 return filtered;
             }

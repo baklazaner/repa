@@ -5,8 +5,15 @@
 }
 
 h1 {
-  margin-top: 8px;
+  margin-top: 2px;
   margin-bottom: 8px;
+}
+
+ul {
+  padding-left: 0;
+}
+ul li {
+  list-style-type: none;
 }
 
 button {
@@ -151,9 +158,42 @@ svg {
 
 
 .detail h3 {
+  background-color:rgb(218,231,242);
   padding-left: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  font-weight: normal;
   font-size: large;
   margin-bottom: 0;
-  text-decoration: underline;
-  
+  text-decoration: none;
 }
+
+.lineage span.domain-name {
+  display: inline-block;
+  width: 100px;
+}
+
+.lineage {
+  border-collapse:collapse;
+}
+
+.lineage span {
+  display: inline-block;
+  width: 60px;
+}
+
+.lineage tr td {
+  border-bottom: 1px solid #AAA;
+}
+
+.lineage li {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.lineage .bar {
+  display: inline-block;
+  background-color: lightpink;
+  height: 15px;
+}
+

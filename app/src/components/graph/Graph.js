@@ -292,7 +292,9 @@ export class Graph {
                     .enter()
                     .append('text')
                         .attr('y', function(d,i){ return i*20; }) // height of a text
-                        .text( function(d,i){ return d.key; /* + '(' + d.percentage + ')'; */ });
+                        .text( function(d,i){
+                             return d ? d.key : ""; 
+                        });
                         
                  drag.on('dragstart', function(d) {
                      console.log('dragstart extended');

@@ -12,7 +12,6 @@ System.register("index", ["angular2/core", "angular2/platform/browser", "angular
       LocationStrategy,
       HashLocationStrategy,
       Intro,
-      MyDear,
       GraphView,
       Main;
   return {
@@ -33,7 +32,6 @@ System.register("index", ["angular2/core", "angular2/platform/browser", "angular
     }, function($__m) {
       Intro = $__m.Intro;
     }, function($__m) {
-      MyDear = $__m.MyDear;
       GraphView = $__m.GraphView;
     }],
     execute: function() {
@@ -42,17 +40,14 @@ System.register("index", ["angular2/core", "angular2/platform/browser", "angular
           console.log('App start');
           console.log('location.pathname', location.pathname);
         }
-        return ($traceurRuntime.createClass)(Main, {refresh: function() {
-            console.log('Refreshing');
-            console.log('mydear', this.mydear);
-          }}, {});
+        return ($traceurRuntime.createClass)(Main, {}, {});
       }();
       $__export("Main", Main);
       Object.defineProperty(Main, "annotations", {get: function() {
           return [new Component({
             selector: 'main',
-            directives: [Intro, ROUTER_DIRECTIVES, MyDear],
-            template: "\n        <h1>REPA</h1> \n        <nav>\n            > <a [routerLink]=\"['Intro']\">Intro</a>\n            > <a [routerLink]=\"['Graph']\">Graph</a>\n            > <a [routerLink]=\"['Graph']\">Export</a>\n        </nav>\n        <mydear></mydear>   \n        <hr>\n        <router-outlet></router-outlet>\n    "
+            directives: [Intro, ROUTER_DIRECTIVES],
+            template: "\n        <h1>REPA</h1> \n        <nav>\n            > <a [routerLink]=\"['Intro']\">Intro</a>\n            > <a [routerLink]=\"['Graph']\">Graph</a>\n            > <a [routerLink]=\"['Graph']\">Export</a>\n        </nav>\n        <hr>\n        <router-outlet></router-outlet>\n    "
           }), new RouteConfig([{
             path: '/',
             redirectTo: ['Intro']

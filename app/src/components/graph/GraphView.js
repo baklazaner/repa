@@ -5,26 +5,9 @@ import {Graph} from 'components/graph/Graph';
 import {Result} from 'DataMining/Result';
 import {Settings} from 'components/graph/Settings';
 
-
-@Directive({
-    selector: 'my-dear'
-})
-
-export class MyDear {
-    constructor(){
-        console.log('Oh my dear!');
-    }
-    
-    test(){
-        console.log('test method');
-    }
-    
-}
-
-
 @Component({
     selector: 'graph-view',
-    directives: [ Graph, MyDear, NgStyle],
+    directives: [ Graph, NgStyle],
     template: `
         <h2>Graph View</h2>
         <div class="left">
@@ -54,12 +37,33 @@ export class MyDear {
                         </tr>
                     </tbody>
                 </table>
+                <div *ngIf="sortedDomains != undefined">
+                    <h3>Total number of similarity hits for each lineage</h3>
+                    <table class="lineage">
+                        <thead>
+                            <tr><td>Lineage</td><td><span class="domain-name">Domain</span>Hits</td></tr>
+                        </thead>
+                        <tr *ngFor="#lineage of domainsByLineage">
+                            <td width="20%">{{lineage[0].Lineage}}</td>
+                            <td width="80%">
+                                <ul>
+                                    <li *ngFor="#entry of lineage"><span class="domain-name">{{entry.Domain}}</span><span>{{entry.Hits}}</span><span class="bar" [ngStyle]="{'width': barWidth(entry.Hits) }"></span></li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
                 <div *ngIf="domains != undefined">
                     <h3>Summary of TE domain hits from blastx</h3>
                     <table>
                         <thead>
                             <tr>
-                                <td>Domain</td><td>ID</td><td>Type</td><td>Lineage</td><td>Hits</td><td>MeanScore</td>
+                                <td>Domain</td>
+                                <td>ID</td>
+                                <td>Type</td>
+                                <td>Lineage</td>
+                                <td>Hits</td>
+                                <td>MeanScore</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -121,6 +125,7 @@ export class GraphView {
     imgSrc: string;
     repeatMasker: any;
     domains: any;
+    maxHits: number;
     
     constructor(zone: NgZone){
         
@@ -200,23 +205,31 @@ export class GraphView {
         this.detailInfo = filterDetailInfo(clusterN);
         this.repeatMasker = result.getRepeatMasker()[index].hits;
         this.domains = result.getDomains()[index];
+        this.sortedDomains = result.getSortedDomains()[index];
+        this.domainsByLineage = result.getSpecificLineage(index);
+  
+        
+        console.log('maxHits', this.maxHits);
+        console.log('domainsByLineage',this.domainsByLineage);
+        
+        
+        if(this.domainsByLineage && this.domainsByLineage[0]){
+            this.maxHits = this.domainsByLineage[0][0].Hits; // the first is the biggest
+            console.log('max hits', this.maxHits);
+        }
        
         this.inDetail = true;
         
         
         function filterDetailInfo(clusterN){
             
-            
-            
             var detailInfo = clusterInfo[clusterN];
             console.log('detail info', detailInfo);
             return detailInfo.filter( (info) => {
                 return settings.info.detailKeys.indexOf(info.key) >= 0;
             });
-            
         }
     }
-    
     
     
     bgColor(i){
@@ -225,5 +238,9 @@ export class GraphView {
         } else {
             return '#EEE';
         }
+    }
+    
+    barWidth(hits){
+        return (hits/this.maxHits*430) + 'px';
     }
 }

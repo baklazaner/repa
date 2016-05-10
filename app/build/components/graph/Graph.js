@@ -177,7 +177,7 @@ System.register("components/graph/Graph", ["angular2/core", "DataMining/Result",
                 }).enter().append('text').attr('y', function(d, i) {
                   return i * 20;
                 }).text(function(d, i) {
-                  return d.key;
+                  return d ? d.key : "";
                 });
                 drag.on('dragstart', function(d) {
                   console.log('dragstart extended');

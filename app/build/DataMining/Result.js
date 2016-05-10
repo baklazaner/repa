@@ -27,6 +27,8 @@ System.register("DataMining/Result", [], function($__export) {
           this.classification;
           this.repeatMasker;
           this.domains;
+          this.sortedDomains;
+          this.domainsByLineage;
         }
         return ($traceurRuntime.createClass)(Result, {
           setResult: function(result) {
@@ -95,6 +97,7 @@ System.register("DataMining/Result", [], function($__export) {
                     info: this.clusterInfo[name],
                     repeatMasker: this.repeatMasker[group],
                     domains: this.domains ? this.domains[group] : undefined,
+                    sortedDomains: this.sortedDomains[group],
                     fixed: false
                   });
                   nodeOrder[name] = i;
@@ -142,6 +145,7 @@ System.register("DataMining/Result", [], function($__export) {
           setDomains: function(data) {
             var _ = require('underscore');
             var sortedDomains = [];
+            var domainsByLineage = [];
             data.forEach(function(domains) {
               var res = undefined;
               if (domains !== undefined) {
@@ -161,15 +165,35 @@ System.register("DataMining/Result", [], function($__export) {
                     return null;
                   }
                 }).without(null).value();
-                console.log('res', res);
+                domainsByLineage.push(_.groupBy(res, 'Lineage'));
+              } else {
+                domainsByLineage.push(undefined);
               }
               sortedDomains.push(res);
             });
             console.log('sortedDomains', sortedDomains);
+            console.log('domainsByLineage', domainsByLineage);
             this.domains = data;
+            this.sortedDomains = sortedDomains;
+            this.domainsByLineage = domainsByLineage;
           },
           getDomains: function() {
             return this.domains;
+          },
+          getSortedDomains: function() {
+            return this.sortedDomains;
+          },
+          getDomainsByLineage: function() {
+            return this.domainsByLineage;
+          },
+          getSpecificLineage: function(n) {
+            var value = this.domainsByLineage[n];
+            if (!value) {
+              return value;
+            }
+            return Object.keys(value).map(function(key) {
+              return value[key];
+            });
           }
         }, {getInstance: function() {
             if (!Result.instance) {
