@@ -51,15 +51,10 @@ System.register("components/intro/intro", ["angular2/core", "angular2/router", "
           var $__3 = this;
           console.info('Intro Component Mounted Successfully');
           console.info('user data dir', app.getPath('userData'));
-          this.threshold = 10;
+          this.threshold = 0;
           this.zone = zone;
           this.router = router;
           this.loading = false;
-          this.updateLoading = function(value) {
-            $__3.zone.run(function() {
-              $__3.loading = value;
-            });
-          };
           storage.has('history', function(error, hasKey) {
             if (!hasKey) {
               console.log('no history key');
@@ -92,17 +87,17 @@ System.register("components/intro/intro", ["angular2/core", "angular2/router", "
               var path = paths[0];
               console.log('path:', path);
               $__3.zone.run(function() {
-                $__3.loading = true;
+                $__3.setPath(path);
               });
-              $__3.mineData(path);
             });
           },
           selectPath: function(path) {
             console.log('path selected', path);
-            this.mineData(path);
+            this.setPath(path);
           },
           mineData: function(path) {
             var $__3 = this;
+            this.updateLoading(true);
             var smartPath = new SmartPath(path);
             var pathToCC = smartPath.getClusterConnectionsPath();
             var pathToST = smartPath.getSummaryTablePath();
@@ -169,6 +164,26 @@ System.register("components/intro/intro", ["angular2/core", "angular2/router", "
                 arr.splice(toIndex, 0, element);
               }
             }
+          },
+          setPath: function(path) {
+            this.path = path;
+          },
+          next: function() {
+            var $__3 = this;
+            console.log('next');
+            if (!this.path) {
+              return;
+            }
+            this.loading = true;
+            setTimeout(function() {
+              $__3.mineData($__3.path);
+            }, 10);
+          },
+          updateLoading: function(value) {
+            var $__3 = this;
+            this.zone.run(function() {
+              $__3.loading = value;
+            });
           }
         }, {});
       }();

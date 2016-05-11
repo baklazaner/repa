@@ -1,14 +1,18 @@
-
-<h3>History</h3>
-<div *ngIf="history && history.paths">
+Please select RepeaterExplorer output folder<br>
+<hr>
+<div class="select-path">
+    <button (click)="openDialog()" [disabled]="loading"> Select Output </button>
+</div>    
+<div *ngIf="history && history.paths" class="history">
+    <h3>Recent</h3>
     <ul>
         <li *ngFor='#path of history.paths'><a (click)="selectPath(path)">{{path}}</a></li>
     </ul>
 </div>
-<hr>
-<br>
-<button (click)="openDialog()" [disabled]="loading"> Select Output </button> 
-<br>
-<br>
-<input type="number" [(ngModel)]="threshold" required> <label for="threshold">Mates Threshold</label> 
+<br clear="all">
+<input type="text" class="path" [(ngModel)]="path"/><button (click)="next()">Next</button>
+
+ <div class="loading" [hidden]="!loading">Processing data, please wait...</div>
+
+<!--<input type="number" [(ngModel)]="threshold" required> <label for="threshold">Mates Threshold</label> -->
 

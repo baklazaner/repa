@@ -33,15 +33,11 @@ export class Intro {
         console.info('Intro Component Mounted Successfully');
         console.info('user data dir', app.getPath('userData'));
         
-        this.threshold = 10; // default mates threshold    
+        this.threshold = 0; // default mates threshold    
         this.zone = zone;
         this.router = router;
         this.loading = false;  
-        this.updateLoading = (value) => {         
-            this.zone.run(() => {
-                this.loading = value;    
-            });                
-        };
+       
         
         storage.has('history', function(error, hasKey) {
             if(!hasKey){
@@ -76,19 +72,22 @@ export class Intro {
             
             // update UI
             this.zone.run(() => {
-                this.loading = true;               
+                // this.loading = true; 
+                this.setPath(path);              
             });    
             
-            this.mineData(path);
+           
         });
     }
     
     selectPath(path){
         console.log('path selected', path);
-        this.mineData(path);
+        this.setPath(path);
     }
     
     mineData(path){
+        // inform user
+         this.updateLoading(true);   
         // run analyzer    
         const smartPath = new SmartPath(path);
         const pathToCC = smartPath.getClusterConnectionsPath();
@@ -189,6 +188,31 @@ export class Intro {
                 arr.splice(toIndex, 0, element);
             }
         }                    
+    }
+    
+    setPath(path){
+        this.path = path;
+    }
+    
+    next(){
+        console.log('next');
+        if(!this.path){
+            return;
+        }
+        
+        // update gui
+        this.loading = true;
+        // run analyzer
+        setTimeout( () => {
+            this.mineData(this.path);
+        }, 10);
+    }
+    
+     
+    updateLoading(value){         
+        this.zone.run(() => {
+            this.loading = value;    
+        });                
     }
     
     // end of class Intro    
