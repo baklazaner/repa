@@ -10,8 +10,12 @@ System.register("DataMining/Analyzer", [], function($__export) {
       Node2 = function() {
         function Node2(name) {
           this.name = name;
+          this.clIndex = nameToIndex(name);
           this.links = new Array();
           this.visited = false;
+          function nameToIndex(clName) {
+            return parseInt(clName.substring(2), 10);
+          }
         }
         return ($traceurRuntime.createClass)(Node2, {linkTo: function(strength, node) {
             this.links.push(new Link2(strength, node));

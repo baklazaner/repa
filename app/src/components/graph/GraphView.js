@@ -87,7 +87,7 @@ import {Settings} from 'components/graph/Settings';
                 <td>Name (number of reads)</td>
             </tr>
             <tr *ngFor="#node of superCluster.clusters;">
-                <td><button (click)="detail(node.name)"><b>{{node.name}}</b> ({{node.size}}) </button></td>
+                <td><button (click)="detail(node.name)"><b>{{node.name}}</b> ({{ allRMData[node.clIndex-1].size}}) </button></td>
             </tr>
         </table>
         </div>
@@ -136,7 +136,10 @@ export class GraphView {
         this.extended = false;       
         this.groups = result.getSuperClusters();
         this.info = result.getClusterInfo();
-      
+        
+       
+        this.allRMData = result.getRepeatMasker();
+        
         
         this.color = Settings.default().color;
         
@@ -147,11 +150,12 @@ export class GraphView {
         });
         
         window.dispatch.on('focus.view', (clusterIndex) => {
+            
             console.log('focusing', clusterIndex);   
-            
-            
              
             this.zone.run( () => {
+                
+                this.nodeToIndex = result.nodeToIndex;
                 
                 this.superCluster = this.groups[clusterIndex]; 
                 console.log('superCluster',this.superCluster );
@@ -161,6 +165,7 @@ export class GraphView {
         });
     }
     
+    // focusing on one super cluster
     focus(clusterIndex){
         console.log('focusing cluster @', clusterIndex);
         this.inDetail = false;
@@ -230,7 +235,6 @@ export class GraphView {
             });
         }
     }
-    
     
     bgColor(i){
         if(i%2){

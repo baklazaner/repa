@@ -29,6 +29,7 @@ System.register("DataMining/Result", [], function($__export) {
           this.domains;
           this.sortedDomains;
           this.domainsByLineage;
+          this.nodeToIndex;
         }
         return ($traceurRuntime.createClass)(Result, {
           setResult: function(result) {
@@ -36,11 +37,17 @@ System.register("DataMining/Result", [], function($__export) {
             this.result.connections = result.connections;
             this.result.nodes = result.nodes;
             this.result.clusters = result.clusters;
-            this.superClusters = toSuperClusters(result.clusters);
-            function toSuperClusters(clusters) {
+            this.updateSuperClusters();
+          },
+          updateSuperClusters: function() {
+            this.superClusters = toSuperClusters(this.result.clusters, this.classification);
+            function toSuperClusters(clusters, classification) {
               var r = [];
-              clusters.forEach(function(cluster) {
-                r.push({clusters: cluster});
+              clusters.forEach(function(cluster, i) {
+                r.push({
+                  clusters: cluster,
+                  classification: classification[i + 1]
+                });
               });
               return r;
             }
@@ -115,6 +122,7 @@ System.register("DataMining/Result", [], function($__export) {
                   i++;
                 }
               }
+              this.nodeToIndex = nodeOrder;
               this.result.connections.forEach(function(con) {
                 if (nodeOrder[con.node2] === undefined || nodeOrder[con.node1] === undefined) {
                   return;
@@ -127,6 +135,7 @@ System.register("DataMining/Result", [], function($__export) {
                   weight: 1
                 });
               });
+              this.updateSuperClusters();
             }
             return this.graph;
             function convertClusters(clusters) {

@@ -1,8 +1,13 @@
 class Node2 {
     constructor(name){
         this.name = name;
+        this.clIndex = nameToIndex(name);
         this.links = new Array();
         this.visited = false;
+        
+        function nameToIndex(clName){
+            return  parseInt( clName.substring(2), 10);    
+        }
     }
     
     linkTo(strength, node){

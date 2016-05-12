@@ -31,6 +31,7 @@ export class Result {
         this.domains;
         this.sortedDomains;
         this.domainsByLineage;
+        this.nodeToIndex;
     }
     
     static getInstance(){
@@ -45,22 +46,28 @@ export class Result {
     setResult(result){
         console.log('setting result', result);
         
+       
         this.result.connections = result.connections;
         this.result.nodes = result.nodes;
         this.result.clusters = result.clusters;
-        this.superClusters = toSuperClusters(result.clusters);
+        this.updateSuperClusters();
         
-        function toSuperClusters(clusters){
+    }
+    
+    updateSuperClusters(){
+        this.superClusters = toSuperClusters(this.result.clusters, this.classification);
+        
+        function toSuperClusters(clusters, classification){
             
             var r = [];
-            clusters.forEach( (cluster) => {
+            clusters.forEach( (cluster, i) => {
                 r.push({
-                    clusters: cluster
+                    clusters: cluster,
+                    classification: classification[i+1]
                 });
             });    
             return r;
         }
-        
     }
     
     getResult(){
@@ -167,6 +174,8 @@ export class Result {
                  }
             }
             
+            this.nodeToIndex = nodeOrder;
+            
             // convert connections
             this.result.connections.forEach( (con) => {
                 
@@ -183,6 +192,9 @@ export class Result {
                 });
                     
             });
+            
+            // update superClusters references
+            this.updateSuperClusters();
         } 
         
         return this.graph;
