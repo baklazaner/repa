@@ -12,7 +12,10 @@ Please select RepeaterExplorer output folder<br>
 <br clear="all">
 <input type="text" class="path" [(ngModel)]="path"/><button (click)="next()">Next</button>
 
- <div class="loading" [hidden]="!loading">Processing data, please wait...</div>
-
+<div class="loading" [hidden]="!loading">
+     Processing data, please wait...
+</div>
+<h3>
+<span class="error">{{error}}</span>    
 <!--<input type="number" [(ngModel)]="threshold" required> <label for="threshold">Mates Threshold</label> -->
 

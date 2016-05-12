@@ -16,7 +16,7 @@ import {Settings} from 'components/graph/Settings';
             </graph>
             <div [hidden]="!inDetail" class="detail">
                 <button (click)="back()">Back</button>
-                <h3 *ngIf="inDetail" >{{detailInfo[0].value}} Detail</h3>
+                <h3 *ngIf="inDetail" >{{name}} Detail</h3>
                 <img src="{{imgSrc}}" alt="cluster layout "/>
                 <h3>Summary</h3>
                 <table>
@@ -103,7 +103,7 @@ import {Settings} from 'components/graph/Settings';
                     <tr *ngFor="#group of groups; #i = index">
                     <td><button (click)="focus(i)" [ngStyle]="{'background-color': color(i) }"><b>SuperCluster{{i+1}}</b></button></td>
                     <td>{{group.clusters.length}}</td> 
-                    <td>{{group.classification[0].classification}}</td>
+                    <td *ngIf="group.classification">{{group.classification[0].classification}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -134,7 +134,7 @@ export class GraphView {
         console.log('initiating graph view');
         this.zone = zone;
         this.extended = false;       
-        this.groups = result.getResult().clusters;
+        this.groups = result.getSuperClusters();
         this.info = result.getClusterInfo();
       
         
@@ -201,7 +201,7 @@ export class GraphView {
         
         var index = postfix-1;
         
-        
+        this.name = clusterN;
         this.detailInfo = filterDetailInfo(clusterN);
         this.repeatMasker = result.getRepeatMasker()[index].hits;
         this.domains = result.getDomains()[index];
@@ -222,7 +222,7 @@ export class GraphView {
         
         
         function filterDetailInfo(clusterN){
-            
+            if(!clusterInfo) return;
             var detailInfo = clusterInfo[clusterN];
             console.log('detail info', detailInfo);
             return detailInfo.filter( (info) => {

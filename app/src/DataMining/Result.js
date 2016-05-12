@@ -48,6 +48,18 @@ export class Result {
         this.result.connections = result.connections;
         this.result.nodes = result.nodes;
         this.result.clusters = result.clusters;
+        this.superClusters = toSuperClusters(result.clusters);
+        
+        function toSuperClusters(clusters){
+            
+            var r = [];
+            clusters.forEach( (cluster) => {
+                r.push({
+                    clusters: cluster
+                });
+            });    
+            return r;
+        }
         
     }
     
@@ -112,6 +124,10 @@ export class Result {
         return this.clusterInfo;
     }
     
+    getSuperClusters(){
+        return this.superClusters;
+    }
+    
     getGraphData(){
         
         
@@ -138,7 +154,7 @@ export class Result {
                         name: name,
                         size: nodes[name],
                         group: group,
-                        info: this.clusterInfo[name], 
+                        info: this.clusterInfo ? this.clusterInfo[name] : undefined, 
                         repeatMasker: this.repeatMasker[group],
                         domains: this.domains ? this.domains[group] : undefined,
                         sortedDomains: this.sortedDomains[group],
@@ -177,7 +193,7 @@ export class Result {
             var counter = 0;
             
             clusters.forEach( (cluster) => {                
-                cluster.clusters.forEach( (node) => {
+                cluster.forEach( (node) => {
                     nameToCluster[node.name] = counter;            
                 });
                 counter++;

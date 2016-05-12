@@ -91,7 +91,7 @@ export class Intro {
         // run analyzer    
         const smartPath = new SmartPath(path);
         const pathToCC = smartPath.getClusterConnectionsPath();
-        const pathToST = smartPath.getSummaryTablePath();
+        // const pathToST = smartPath.getSummaryTablePath();
         const pathToCLSV = smartPath.getClassificationPath();
         const pathToSummary = smartPath.getSummaryPath();
         const pathToRM = smartPath.getRMPath();
@@ -102,34 +102,34 @@ export class Intro {
             this.updateHistory(path);   
         }
         
-        const summary = new SummaryTable(pathToST);
+        // const summary = new SummaryTable(pathToST);
         const classification = new Classification(pathToCLSV);
         
         const analyzer = new Analyzer(pathToCC);
         analyzer.setThreshold(this.threshold);
-        
-        const perResult = Result.getInstance();
-        perResult.setSummaryPath(pathToSummary);
         
         const rm = new RepeatMasker(pathToRM);
         
         const blastx = new Blastx(pathToBlastx);
         
         Promise.all([
-            analyzer.process(), summary.process(), classification.process(), rm.process(), blastx.process()
+            analyzer.process(), classification.process(), rm.process(), blastx.process()
             ]).then( (values) =>{
                 
+                const perResult = Result.getInstance();
+                perResult.setSummaryPath(pathToSummary);
+                
                 var result = values[0];
-                var clusterInfo = values[1];
-                var classification = values[2];
-                var rmTable = values[3];
-                var blastxData = values[4];
+                // var clusterInfo = values[1];
+                var classification = values[1];
+                var rmTable = values[2];
+                var blastxData = values[3];
                 
                 perResult.setDomains(blastxData);
                 perResult.setRepeatMasker(rmTable);
                 perResult.setClassification(classification);
                 perResult.setResult(result);
-                perResult.setClusterInfo(clusterInfo);
+                // perResult.setClusterInfo(clusterInfo);
                
                 console.log('DataMining', values);
                 

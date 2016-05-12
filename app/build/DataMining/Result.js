@@ -36,6 +36,14 @@ System.register("DataMining/Result", [], function($__export) {
             this.result.connections = result.connections;
             this.result.nodes = result.nodes;
             this.result.clusters = result.clusters;
+            this.superClusters = toSuperClusters(result.clusters);
+            function toSuperClusters(clusters) {
+              var r = [];
+              clusters.forEach(function(cluster) {
+                r.push({clusters: cluster});
+              });
+              return r;
+            }
           },
           getResult: function() {
             return this.result;
@@ -78,6 +86,9 @@ System.register("DataMining/Result", [], function($__export) {
           getClusterInfo: function() {
             return this.clusterInfo;
           },
+          getSuperClusters: function() {
+            return this.superClusters;
+          },
           getGraphData: function() {
             var $__5 = this;
             if (this.graph.nodes === undefined || this.graph.links === undefined) {
@@ -94,7 +105,7 @@ System.register("DataMining/Result", [], function($__export) {
                     name: name,
                     size: nodes[name],
                     group: group,
-                    info: this.clusterInfo[name],
+                    info: this.clusterInfo ? this.clusterInfo[name] : undefined,
                     repeatMasker: this.repeatMasker[group],
                     domains: this.domains ? this.domains[group] : undefined,
                     sortedDomains: this.sortedDomains[group],
@@ -122,7 +133,7 @@ System.register("DataMining/Result", [], function($__export) {
               var nameToCluster = {};
               var counter = 0;
               clusters.forEach(function(cluster) {
-                cluster.clusters.forEach(function(node) {
+                cluster.forEach(function(node) {
                   nameToCluster[node.name] = counter;
                 });
                 counter++;

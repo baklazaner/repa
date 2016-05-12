@@ -100,7 +100,6 @@ System.register("components/intro/intro", ["angular2/core", "angular2/router", "
             this.updateLoading(true);
             var smartPath = new SmartPath(path);
             var pathToCC = smartPath.getClusterConnectionsPath();
-            var pathToST = smartPath.getSummaryTablePath();
             var pathToCLSV = smartPath.getClassificationPath();
             var pathToSummary = smartPath.getSummaryPath();
             var pathToRM = smartPath.getRMPath();
@@ -108,25 +107,22 @@ System.register("components/intro/intro", ["angular2/core", "angular2/router", "
             if (pathToCC) {
               this.updateHistory(path);
             }
-            var summary = new SummaryTable(pathToST);
             var classification = new Classification(pathToCLSV);
             var analyzer = new Analyzer(pathToCC);
             analyzer.setThreshold(this.threshold);
-            var perResult = Result.getInstance();
-            perResult.setSummaryPath(pathToSummary);
             var rm = new RepeatMasker(pathToRM);
             var blastx = new Blastx(pathToBlastx);
-            Promise.all([analyzer.process(), summary.process(), classification.process(), rm.process(), blastx.process()]).then(function(values) {
+            Promise.all([analyzer.process(), classification.process(), rm.process(), blastx.process()]).then(function(values) {
+              var perResult = Result.getInstance();
+              perResult.setSummaryPath(pathToSummary);
               var result = values[0];
-              var clusterInfo = values[1];
-              var classification = values[2];
-              var rmTable = values[3];
-              var blastxData = values[4];
+              var classification = values[1];
+              var rmTable = values[2];
+              var blastxData = values[3];
               perResult.setDomains(blastxData);
               perResult.setRepeatMasker(rmTable);
               perResult.setClassification(classification);
               perResult.setResult(result);
-              perResult.setClusterInfo(clusterInfo);
               console.log('DataMining', values);
               $__3.updateLoading(false);
               $__3.router.parent.navigate(['Graph']);
