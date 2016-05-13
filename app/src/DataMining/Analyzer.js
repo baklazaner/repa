@@ -1,13 +1,15 @@
 class Node2 {
+    
+    static nameToIndex(clName){
+        return  parseInt( clName.substring(2), 10);    
+    }
+    
     constructor(name){
+        
         this.name = name;
-        this.clIndex = nameToIndex(name);
+        this.clIndex = Node2.nameToIndex(name);
         this.links = new Array();
         this.visited = false;
-        
-        function nameToIndex(clName){
-            return  parseInt( clName.substring(2), 10);    
-        }
     }
     
     linkTo(strength, node){
@@ -153,13 +155,40 @@ export class Analyzer {
     
     constructor(path){
         console.log('Analyzer is getting ready');
-        // if(!path){
-        //     throw 'Missing path';
-        // }
-        
-        this.path = path;    
+   
+        this.limit = 200;
+        this.path = path;   
         
         this.threshold = 10; // default value
+    }
+    
+    /**
+     * limits number of clusters registered
+     */
+    setClusterLimit(limit){
+        this.limit = limit; 
+    }
+    
+    /**
+     * Automaticly finds cluster limits, by looking throught output files
+     */
+    findoutClusterLimit(){
+        if(!this.clusterFolder)
+            return;
+            
+         const fs = require('fs'); 
+         this.limit = fs.readdirSync(this.clusterFolder).length;
+         
+         console.log('Cluster limit:', this.limit);
+           
+         return this.limit;
+    }
+    
+    /**
+     * sets path to cluster folder, and finds limit
+     */
+    setClusterPath(path){
+        this.clusterFolder = path;
     }
     
     setThreshold(t){
@@ -172,6 +201,8 @@ export class Analyzer {
     }
         
     readFile(path){
+        
+        const limit = this.limit;
         
         const threshold = this.threshold;
         
@@ -237,7 +268,11 @@ export class Analyzer {
                 } else {               
                 // size of one
                     if(strength > 10){
-                        nodes[node1] = strength;
+                        
+                        var id = Node2.nameToIndex(node1);
+                        if(id <= limit){
+                            nodes[node1] = strength;
+                        }
                     }
                 }
             }

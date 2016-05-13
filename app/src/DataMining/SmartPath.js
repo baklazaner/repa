@@ -1,7 +1,8 @@
 
 
 /**
- * 
+ * Class, for obtaing paths to necessary files or any file in particular
+ * Works in Unix/Linux/Windows
  */
 export class SmartPath {
     
@@ -47,5 +48,9 @@ export class SmartPath {
     
     getBlastxPath(){
         return this.getAnyFilePath(/seqClust\/clustering\/blastx$/);
+    }
+    
+    getClustersPath(){
+        return this.getAnyFilePath(/seqClust\/clustering\/clusters$/);
     }
 }

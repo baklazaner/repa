@@ -34,6 +34,9 @@ System.register("DataMining/SmartPath", [], function($__export) {
           },
           getBlastxPath: function() {
             return this.getAnyFilePath(/seqClust\/clustering\/blastx$/);
+          },
+          getClustersPath: function() {
+            return this.getAnyFilePath(/seqClust\/clustering\/clusters$/);
           }
         }, {});
       }();

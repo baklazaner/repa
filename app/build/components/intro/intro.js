@@ -103,11 +103,14 @@ System.register("components/intro/intro", ["angular2/core", "angular2/router", "
             var pathToSummary = smartPath.getSummaryPath();
             var pathToRM = smartPath.getRMPath();
             var pathToBlastx = smartPath.getBlastxPath();
+            var pathToClusters = smartPath.getClustersPath();
             if (pathToCC) {
               this.updateHistory(path);
             }
             var analyzer = new Analyzer(pathToCC);
             analyzer.setThreshold(this.threshold);
+            analyzer.setClusterPath(pathToClusters);
+            analyzer.findoutClusterLimit();
             var rm = new RepeatMasker(pathToRM);
             var blastx = new Blastx(pathToBlastx);
             Promise.all([analyzer.process(), rm.process(), blastx.process()]).then(function(values) {

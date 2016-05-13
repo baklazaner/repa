@@ -91,21 +91,21 @@ export class Intro {
         // run analyzer    
         const smartPath = new SmartPath(path);
         const pathToCC = smartPath.getClusterConnectionsPath();
-        // const pathToCLSV = smartPath.getClassificationPath();
         const pathToSummary = smartPath.getSummaryPath();
         const pathToRM = smartPath.getRMPath();
         const pathToBlastx = smartPath.getBlastxPath(); 
+        const pathToClusters = smartPath.getClustersPath();
         
         // only update history on successful search
         if(pathToCC){
             this.updateHistory(path);   
         }
         
-        // const summary = new SummaryTable(pathToST);
-        // const classification = new Classification(pathToCLSV);
         
         const analyzer = new Analyzer(pathToCC);
         analyzer.setThreshold(this.threshold);
+        analyzer.setClusterPath(pathToClusters);
+        analyzer.findoutClusterLimit();
         
         const rm = new RepeatMasker(pathToRM);
         
@@ -113,7 +113,7 @@ export class Intro {
         
         Promise.all([
             analyzer.process(), rm.process(), blastx.process()
-            ]).then( (values) =>{
+            ]).then( (values) => {
                 
                 const perResult = Result.getInstance();
                 perResult.setSummaryPath(pathToSummary);

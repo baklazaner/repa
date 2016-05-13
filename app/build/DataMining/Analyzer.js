@@ -10,22 +10,24 @@ System.register("DataMining/Analyzer", [], function($__export) {
       Node2 = function() {
         function Node2(name) {
           this.name = name;
-          this.clIndex = nameToIndex(name);
+          this.clIndex = Node2.nameToIndex(name);
           this.links = new Array();
           this.visited = false;
-          function nameToIndex(clName) {
-            return parseInt(clName.substring(2), 10);
-          }
         }
         return ($traceurRuntime.createClass)(Node2, {linkTo: function(strength, node) {
             this.links.push(new Link2(strength, node));
-          }}, {createPair: function(nodeName1, nodeName2, strength) {
+          }}, {
+          nameToIndex: function(clName) {
+            return parseInt(clName.substring(2), 10);
+          },
+          createPair: function(nodeName1, nodeName2, strength) {
             var node1 = new Node2(nodeName1);
             var node2 = new Node2(nodeName2);
             node1.linkTo(strength, node2);
             node2.linkTo(strength, node1);
             return [node1, node2];
-          }});
+          }
+        });
       }();
       Link2 = function() {
         function Link2(strength, toNode) {
@@ -113,10 +115,25 @@ System.register("DataMining/Analyzer", [], function($__export) {
       Analyzer = function() {
         function Analyzer(path) {
           console.log('Analyzer is getting ready');
+          this.limit = 200;
           this.path = path;
           this.threshold = 10;
         }
         return ($traceurRuntime.createClass)(Analyzer, {
+          setClusterLimit: function(limit) {
+            this.limit = limit;
+          },
+          findoutClusterLimit: function() {
+            if (!this.clusterFolder)
+              return;
+            var fs = require('fs');
+            this.limit = fs.readdirSync(this.clusterFolder).length;
+            console.log('Cluster limit:', this.limit);
+            return this.limit;
+          },
+          setClusterPath: function(path) {
+            this.clusterFolder = path;
+          },
           setThreshold: function(t) {
             console.log('Analyzer setting threshold', t);
             this.threshold = t;
@@ -126,6 +143,7 @@ System.register("DataMining/Analyzer", [], function($__export) {
           },
           readFile: function(path) {
             var $__6 = this;
+            var limit = this.limit;
             var threshold = this.threshold;
             var connections = [];
             var nodes = {};
@@ -166,7 +184,10 @@ System.register("DataMining/Analyzer", [], function($__export) {
                   });
                 } else {
                   if (strength > 10) {
-                    nodes[node1] = strength;
+                    var id = Node2.nameToIndex(node1);
+                    if (id <= limit) {
+                      nodes[node1] = strength;
+                    }
                   }
                 }
               }
