@@ -125,6 +125,7 @@ System.register("components/intro/intro", ["angular2/core", "angular2/router", "
               perResult.setResult(result);
               console.log('DataMining', values);
               $__3.updateLoading(false);
+              $__3.enableMenu();
               $__3.router.parent.navigate(['Graph']);
               console.log('values', values);
             }).catch(function(error) {
@@ -180,6 +181,9 @@ System.register("components/intro/intro", ["angular2/core", "angular2/router", "
             this.zone.run(function() {
               $__3.loading = value;
             });
+          },
+          enableMenu: function() {
+            window.dispatch.menu();
           }
         }, {});
       }();

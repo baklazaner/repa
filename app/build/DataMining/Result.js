@@ -19,6 +19,7 @@ System.register("DataMining/Result", [], function($__export) {
       Result = function() {
         function Result() {
           console.log('creating instance of Results');
+          this.isResult = false;
           this.result = new ResultData();
           this.graph = new GraphData();
           this.clusterInfo;
@@ -38,6 +39,7 @@ System.register("DataMining/Result", [], function($__export) {
             this.result.nodes = result.nodes;
             this.result.clusters = result.clusters;
             this.updateSuperClusters();
+            this.isResult = true;
           },
           updateSuperClusters: function() {
             var $__5 = this;

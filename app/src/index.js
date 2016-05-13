@@ -1,7 +1,7 @@
 /// <reference path="../node_modules/angular2/typings/browser.d.ts" />
 
 // angular2
-import {Component, bind, provide, ViewChild} from 'angular2/core';
+import {Component, bind, provide, NgZone} from 'angular2/core';
 import {bootstrap} from 'angular2/platform/browser';
 import {ROUTER_PROVIDERS,RouteConfig, ROUTER_DIRECTIVES,APP_BASE_HREF,LocationStrategy, HashLocationStrategy} from 'angular2/router';
 
@@ -19,8 +19,13 @@ import {Result} from 'DataMining/Result';
         <h1>REPA</h1> 
         <nav>
             > <a [routerLink]="['Intro']">Intro</a>
+            <span [hidden]="!graphAvailable()">
             > <a [routerLink]="['Graph']">Graph</a>
-            > <a [routerLink]="['Graph']">Export</a>
+            > <a [routerLink]="['Graph']">Save</a>
+            </span>
+            <span [hidden]="graphAvailable()" class="fake">
+            > Graph > Save
+            </span>
         </nav>
         <hr>
         <router-outlet></router-outlet>
@@ -35,12 +40,22 @@ import {Result} from 'DataMining/Result';
 
 export class Main {
     
-    constructor(){
+    constructor(zone: NgZone){
+    
+        this.menu = false;
         
         console.log('App start');
         console.log('location.pathname',location.pathname);
         
-        // this.graphAvailable = Result.getInstance().resultSet;
+        window.dispatch = d3.dispatch('unfocus','focus','menu');
+        window.dispatch.on('menu', () => {
+            console.log('enabling menu');    
+            this.menu = true;  
+        });
+    }
+    
+    graphAvailable(){
+        return this.menu;
     }
 }
 

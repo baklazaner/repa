@@ -38,7 +38,6 @@ System.register("components/graph/GraphView", ["angular2/core", "angular2/common
           this.info = result.getClusterInfo();
           this.allRMData = result.getRepeatMasker();
           this.color = Settings.default().color;
-          window.dispatch = d3.dispatch('unfocus', 'focus');
           window.dispatch.on('unfocus.view', function() {
             console.log('unfocusing');
           });

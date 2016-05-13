@@ -131,6 +131,7 @@ export class Intro {
                 console.log('DataMining', values);
                 
                 this.updateLoading(false);   
+                this.enableMenu();
                 this.router.parent.navigate(['Graph']);         
                 
                 console.log('values', values);
@@ -210,6 +211,10 @@ export class Intro {
         this.zone.run(() => {
             this.loading = value;    
         });                
+    }
+    
+    enableMenu(){
+       window.dispatch.menu();
     }
     
     // end of class Intro    

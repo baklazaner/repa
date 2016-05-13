@@ -3,7 +3,7 @@ System.register("index", ["angular2/core", "angular2/platform/browser", "angular
   var Component,
       bind,
       provide,
-      ViewChild,
+      NgZone,
       bootstrap,
       ROUTER_PROVIDERS,
       RouteConfig,
@@ -20,7 +20,7 @@ System.register("index", ["angular2/core", "angular2/platform/browser", "angular
       Component = $__m.Component;
       bind = $__m.bind;
       provide = $__m.provide;
-      ViewChild = $__m.ViewChild;
+      NgZone = $__m.NgZone;
     }, function($__m) {
       bootstrap = $__m.bootstrap;
     }, function($__m) {
@@ -39,18 +39,27 @@ System.register("index", ["angular2/core", "angular2/platform/browser", "angular
     }],
     execute: function() {
       Main = function() {
-        function Main() {
+        function Main(zone) {
+          var $__4 = this;
+          this.menu = false;
           console.log('App start');
           console.log('location.pathname', location.pathname);
+          window.dispatch = d3.dispatch('unfocus', 'focus', 'menu');
+          window.dispatch.on('menu', function() {
+            console.log('enabling menu');
+            $__4.menu = true;
+          });
         }
-        return ($traceurRuntime.createClass)(Main, {}, {});
+        return ($traceurRuntime.createClass)(Main, {graphAvailable: function() {
+            return this.menu;
+          }}, {});
       }();
       $__export("Main", Main);
       Object.defineProperty(Main, "annotations", {get: function() {
           return [new Component({
             selector: 'main',
             directives: [Intro, ROUTER_DIRECTIVES],
-            template: "\n        <h1>REPA</h1> \n        <nav>\n            > <a [routerLink]=\"['Intro']\">Intro</a>\n            > <a [routerLink]=\"['Graph']\">Graph</a>\n            > <a [routerLink]=\"['Graph']\">Export</a>\n        </nav>\n        <hr>\n        <router-outlet></router-outlet>\n    "
+            template: "\n        <h1>REPA</h1> \n        <nav>\n            > <a [routerLink]=\"['Intro']\">Intro</a>\n            <span [hidden]=\"!graphAvailable()\">\n            > <a [routerLink]=\"['Graph']\">Graph</a>\n            > <a [routerLink]=\"['Graph']\">Save</a>\n            </span>\n            <span [hidden]=\"graphAvailable()\" class=\"fake\">\n            > Graph > Save\n            </span>\n        </nav>\n        <hr>\n        <router-outlet></router-outlet>\n    "
           }), new RouteConfig([{
             path: '/',
             redirectTo: ['Intro']
@@ -64,6 +73,9 @@ System.register("index", ["angular2/core", "angular2/platform/browser", "angular
             name: 'Graph',
             component: GraphView
           }])];
+        }});
+      Object.defineProperty(Main, "parameters", {get: function() {
+          return [[NgZone]];
         }});
       bootstrap(Main, [ROUTER_PROVIDERS, bind(APP_BASE_HREF).toValue('/'), provide(LocationStrategy, {useClass: HashLocationStrategy})]);
     }

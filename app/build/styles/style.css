@@ -246,4 +246,10 @@ svg {
   text-align: center;
   font-size: large;
   padding-top: 30%;
+  cursor: wait;
+}
+
+.fake {
+  color:  #666;
+  cursor: not-allowed;
 }

@@ -21,6 +21,8 @@ export class Result {
     constructor(){
         console.log('creating instance of Results');
         
+        this.isResult = false;
+        
         this.result = new ResultData();
         this.graph = new GraphData();
         
@@ -52,6 +54,8 @@ export class Result {
         this.result.nodes = result.nodes;
         this.result.clusters = result.clusters;
         this.updateSuperClusters();
+        
+        this.isResult = true;
     }
     
     updateSuperClusters(){ 

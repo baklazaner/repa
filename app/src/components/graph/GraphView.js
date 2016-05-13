@@ -42,7 +42,7 @@ export class GraphView {
         
         this.color = Settings.default().color;
         
-        window.dispatch = d3.dispatch('unfocus','focus');
+        
         
         window.dispatch.on('unfocus.view', () => {
             console.log('unfocusing');
