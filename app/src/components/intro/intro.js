@@ -91,7 +91,7 @@ export class Intro {
         // run analyzer    
         const smartPath = new SmartPath(path);
         const pathToCC = smartPath.getClusterConnectionsPath();
-        const pathToCLSV = smartPath.getClassificationPath();
+        // const pathToCLSV = smartPath.getClassificationPath();
         const pathToSummary = smartPath.getSummaryPath();
         const pathToRM = smartPath.getRMPath();
         const pathToBlastx = smartPath.getBlastxPath(); 
@@ -102,7 +102,7 @@ export class Intro {
         }
         
         // const summary = new SummaryTable(pathToST);
-        const classification = new Classification(pathToCLSV);
+        // const classification = new Classification(pathToCLSV);
         
         const analyzer = new Analyzer(pathToCC);
         analyzer.setThreshold(this.threshold);
@@ -112,20 +112,18 @@ export class Intro {
         const blastx = new Blastx(pathToBlastx);
         
         Promise.all([
-            analyzer.process(), classification.process(), rm.process(), blastx.process()
+            analyzer.process(), rm.process(), blastx.process()
             ]).then( (values) =>{
                 
                 const perResult = Result.getInstance();
                 perResult.setSummaryPath(pathToSummary);
                 
                 var result = values[0];
-                var classification = values[1];
-                var rmTable = values[2];
-                var blastxData = values[3];
+                var rmTable = values[1];
+                var blastxData = values[2];
                 
                 perResult.setDomains(blastxData);
                 perResult.setRepeatMasker(rmTable);
-                perResult.setClassification(classification);
                 perResult.setResult(result);
                
                 console.log('DataMining', values);

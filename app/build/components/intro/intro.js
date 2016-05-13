@@ -100,28 +100,24 @@ System.register("components/intro/intro", ["angular2/core", "angular2/router", "
             this.updateLoading(true);
             var smartPath = new SmartPath(path);
             var pathToCC = smartPath.getClusterConnectionsPath();
-            var pathToCLSV = smartPath.getClassificationPath();
             var pathToSummary = smartPath.getSummaryPath();
             var pathToRM = smartPath.getRMPath();
             var pathToBlastx = smartPath.getBlastxPath();
             if (pathToCC) {
               this.updateHistory(path);
             }
-            var classification = new Classification(pathToCLSV);
             var analyzer = new Analyzer(pathToCC);
             analyzer.setThreshold(this.threshold);
             var rm = new RepeatMasker(pathToRM);
             var blastx = new Blastx(pathToBlastx);
-            Promise.all([analyzer.process(), classification.process(), rm.process(), blastx.process()]).then(function(values) {
+            Promise.all([analyzer.process(), rm.process(), blastx.process()]).then(function(values) {
               var perResult = Result.getInstance();
               perResult.setSummaryPath(pathToSummary);
               var result = values[0];
-              var classification = values[1];
-              var rmTable = values[2];
-              var blastxData = values[3];
+              var rmTable = values[1];
+              var blastxData = values[2];
               perResult.setDomains(blastxData);
               perResult.setRepeatMasker(rmTable);
-              perResult.setClassification(classification);
               perResult.setResult(result);
               console.log('DataMining', values);
               $__3.updateLoading(false);
