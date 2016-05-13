@@ -64,16 +64,18 @@ export class Result {
         this.result.clusters.forEach( (cluster, i) => {
             
             var domains = [];
+            var classification = [];
             cluster.forEach( (node) => {
                 
                 var family = this.getSpecificLineage(node.clIndex-1);
-                if( family && family[0]){
-                    
-                    domains.push(
-                        family[0]
-                    );
-                }       
+                
+                if( family && family[0]){                    
+                    domains.push( family[0] );
+                }
             });
+            
+            var firstNodeRM = this.repeatMasker[cluster[0].clIndex-1]
+            var cClass = (firstNodeRM && firstNodeRM.hits && firstNodeRM.hits[0] ) ? firstNodeRM.hits[0].key : "N/A";     
             
             // flattern array
             var merged = [].concat.apply([], domains).filter( onlyUnique );
@@ -81,7 +83,7 @@ export class Result {
             r.push({
                 clusters: cluster,
                 domains: merged,
-                // classification: this.classification[i+1]
+                classification: cClass
             });
         });    
         this.superClusters = r;

@@ -46,16 +46,20 @@ System.register("DataMining/Result", [], function($__export) {
             var r = [];
             this.result.clusters.forEach(function(cluster, i) {
               var domains = [];
+              var classification = [];
               cluster.forEach(function(node) {
                 var family = $__5.getSpecificLineage(node.clIndex - 1);
                 if (family && family[0]) {
                   domains.push(family[0]);
                 }
               });
+              var firstNodeRM = $__5.repeatMasker[cluster[0].clIndex - 1];
+              var cClass = (firstNodeRM && firstNodeRM.hits && firstNodeRM.hits[0]) ? firstNodeRM.hits[0].key : "N/A";
               var merged = [].concat.apply([], domains).filter(onlyUnique);
               r.push({
                 clusters: cluster,
-                domains: merged
+                domains: merged,
+                classification: cClass
               });
             });
             this.superClusters = r;

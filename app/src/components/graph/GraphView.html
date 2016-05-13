@@ -92,7 +92,7 @@
             <tr *ngFor="#group of groups; #i = index">
             <td><button (click)="focus(i)" [ngStyle]="{'background-color': color(i) }"><b>SuperCluster{{i+1}}</b></button></td>
             <td>{{group.clusters.length}}</td> 
-            <td *ngIf="group.classification">{{group.classification[0].classification}}</td>
+            <td *ngIf="group.classification">{{group.classification}}</td>
             </tr>
         </tbody>
     </table>
