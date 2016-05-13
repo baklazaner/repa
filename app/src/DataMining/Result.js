@@ -23,6 +23,7 @@ export class Result {
         
         this.result = new ResultData();
         this.graph = new GraphData();
+        
         this.clusterInfo;
         this.summaryPath;
         this.superClusters = [];
@@ -51,23 +52,44 @@ export class Result {
         this.result.nodes = result.nodes;
         this.result.clusters = result.clusters;
         this.updateSuperClusters();
-        
     }
     
-    updateSuperClusters(){
-        this.superClusters = toSuperClusters(this.result.clusters, this.classification);
-        
-        function toSuperClusters(clusters, classification){
+    updateSuperClusters(){ 
             
-            var r = [];
-            clusters.forEach( (cluster, i) => {
-                r.push({
-                    clusters: cluster,
-                    classification: classification[i+1]
-                });
-            });    
-            return r;
+        var r = [];
+        this.result.clusters.forEach( (cluster, i) => {
+            
+            var domains = [];
+            cluster.forEach( (node) => {
+                
+                var family = this.getSpecificLineage(node.clIndex-1);
+                if( family && family[0]){
+                    
+                    domains.push(
+                        family[0]
+                    );
+                }       
+            });
+            
+            // flattern array
+            var merged = [].concat.apply([], domains).filter( onlyUnique );
+            
+            r.push({
+                clusters: cluster,
+                domains: merged,
+                // classification: this.classification[i+1]
+            });
+        });    
+        this.superClusters = r;
+        
+        
+        function onlyUnique(value, index, self) { 
+            var found = false;
+            self.forEach( (val) => {
+                // found = val.Domain = value.Domain;    
+            });  (value) === index;
         }
+        
     }
     
     getResult(){
@@ -138,7 +160,7 @@ export class Result {
     getGraphData(){
         
         
-        if( this.graph.nodes === undefined || this.graph.links === undefined ){
+        if( true || this.graph.nodes === undefined || this.graph.links === undefined ){
             // convert result to graph data
             // and store it 
             var nodes = this.result.nodes;
@@ -149,6 +171,10 @@ export class Result {
             
             const nodeToCluster = convertClusters(this.result.clusters);
             
+            var nameToIndex = function(clName){
+                return  parseInt( clName.substring(2), 10);    
+            }
+            
             // convert nodes
             var i = 0;
             
@@ -157,15 +183,17 @@ export class Result {
                 var group = nodeToCluster[name];
                 if(group !== undefined){                
                     // create graph node
+                    var index = nameToIndex(name);
+                    
                     this.graph.nodes.push({
                         name: name,
                         size: nodes[name],
                         group: group,
                         info: this.clusterInfo ? this.clusterInfo[name] : undefined, 
-                        repeatMasker: this.repeatMasker[group],
-                        domains: this.domains ? this.domains[group] : undefined,
-                        sortedDomains: this.sortedDomains[group],
-                        // doaminsByLineage: this.domainsByLineage[group],
+                        // repeatMasker: this.repeatMasker[group],
+                        // domains: this.domains ? this.domains[group] : undefined,
+                        // sortedDomains: this.sortedDomains[group],
+                        trueDomains: this.getSpecificLineage(index-1),
                         fixed: false                                       
                     });
                     
@@ -192,9 +220,6 @@ export class Result {
                 });
                     
             });
-            
-            // update superClusters references
-            this.updateSuperClusters();
         } 
         
         return this.graph;
@@ -299,11 +324,23 @@ export class Result {
     }
     
     getSpecificLineage(n){
+    
         var value = this.domainsByLineage[n];
         if(!value){
             return value;
         }
-        return Object.keys(value).map( key => value[key] );
+        
+        var lineages = Object.keys(value)
+            .map( (key) => value[key] );
+        
+        // sort by Hits
+        lineages.forEach( (entry) => {
+            entry.sort( (a,b) =>  
+                 b.Hits - a.Hits
+            );
+        });
+        return lineages;    
+            
     }
     
 } 

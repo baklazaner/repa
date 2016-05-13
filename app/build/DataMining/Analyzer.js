@@ -165,7 +165,9 @@ System.register("DataMining/Analyzer", [], function($__export) {
                     strength: strength
                   });
                 } else {
-                  nodes[node1] = strength;
+                  if (strength > 10) {
+                    nodes[node1] = strength;
+                  }
                 }
               }
             }

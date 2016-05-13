@@ -7,8 +7,8 @@ import {ROUTER_PROVIDERS,RouteConfig, ROUTER_DIRECTIVES,APP_BASE_HREF,LocationSt
 
 // Repas
 import {Intro} from 'components/intro/intro';
-import { GraphView} from 'components/graph/GraphView';
-
+import {GraphView} from 'components/graph/GraphView';
+import {Result} from 'DataMining/Result';
 
 
 
@@ -36,8 +36,11 @@ import { GraphView} from 'components/graph/GraphView';
 export class Main {
     
     constructor(){
+        
         console.log('App start');
         console.log('location.pathname',location.pathname);
+        
+        // this.graphAvailable = Result.getInstance().resultSet;
     }
 }
 

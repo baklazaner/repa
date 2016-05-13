@@ -1,4 +1,4 @@
-System.register("index", ["angular2/core", "angular2/platform/browser", "angular2/router", "components/intro/intro", "components/graph/GraphView"], function($__export) {
+System.register("index", ["angular2/core", "angular2/platform/browser", "angular2/router", "components/intro/intro", "components/graph/GraphView", "DataMining/Result"], function($__export) {
   "use strict";
   var Component,
       bind,
@@ -13,6 +13,7 @@ System.register("index", ["angular2/core", "angular2/platform/browser", "angular
       HashLocationStrategy,
       Intro,
       GraphView,
+      Result,
       Main;
   return {
     setters: [function($__m) {
@@ -33,6 +34,8 @@ System.register("index", ["angular2/core", "angular2/platform/browser", "angular
       Intro = $__m.Intro;
     }, function($__m) {
       GraphView = $__m.GraphView;
+    }, function($__m) {
+      Result = $__m.Result;
     }],
     execute: function() {
       Main = function() {

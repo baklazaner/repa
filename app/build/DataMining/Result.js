@@ -40,16 +40,27 @@ System.register("DataMining/Result", [], function($__export) {
             this.updateSuperClusters();
           },
           updateSuperClusters: function() {
-            this.superClusters = toSuperClusters(this.result.clusters, this.classification);
-            function toSuperClusters(clusters, classification) {
-              var r = [];
-              clusters.forEach(function(cluster, i) {
-                r.push({
-                  clusters: cluster,
-                  classification: classification[i + 1]
-                });
+            var $__5 = this;
+            var r = [];
+            this.result.clusters.forEach(function(cluster, i) {
+              var domains = [];
+              cluster.forEach(function(node) {
+                var family = $__5.getSpecificLineage(node.clIndex - 1);
+                if (family && family[0]) {
+                  domains.push(family[0]);
+                }
               });
-              return r;
+              var merged = [].concat.apply([], domains).filter(onlyUnique);
+              r.push({
+                clusters: cluster,
+                domains: merged
+              });
+            });
+            this.superClusters = r;
+            function onlyUnique(value, index, self) {
+              var found = false;
+              self.forEach(function(val) {});
+              (value) === index;
             }
           },
           getResult: function() {
@@ -98,24 +109,26 @@ System.register("DataMining/Result", [], function($__export) {
           },
           getGraphData: function() {
             var $__5 = this;
-            if (this.graph.nodes === undefined || this.graph.links === undefined) {
+            if (true || this.graph.nodes === undefined || this.graph.links === undefined) {
               var nodes = this.result.nodes;
               var nodeOrder = {};
               this.graph.nodes = [];
               this.graph.links = [];
               var nodeToCluster = convertClusters(this.result.clusters);
+              var nameToIndex = function(clName) {
+                return parseInt(clName.substring(2), 10);
+              };
               var i = 0;
               for (var name in nodes) {
                 var group = nodeToCluster[name];
                 if (group !== undefined) {
+                  var index = nameToIndex(name);
                   this.graph.nodes.push({
                     name: name,
                     size: nodes[name],
                     group: group,
                     info: this.clusterInfo ? this.clusterInfo[name] : undefined,
-                    repeatMasker: this.repeatMasker[group],
-                    domains: this.domains ? this.domains[group] : undefined,
-                    sortedDomains: this.sortedDomains[group],
+                    trueDomains: this.getSpecificLineage(index - 1),
                     fixed: false
                   });
                   nodeOrder[name] = i;
@@ -135,7 +148,6 @@ System.register("DataMining/Result", [], function($__export) {
                   weight: 1
                 });
               });
-              this.updateSuperClusters();
             }
             return this.graph;
             function convertClusters(clusters) {
@@ -211,9 +223,15 @@ System.register("DataMining/Result", [], function($__export) {
             if (!value) {
               return value;
             }
-            return Object.keys(value).map(function(key) {
+            var lineages = Object.keys(value).map(function(key) {
               return value[key];
             });
+            lineages.forEach(function(entry) {
+              entry.sort(function(a, b) {
+                return b.Hits - a.Hits;
+              });
+            });
+            return lineages;
           }
         }, {getInstance: function() {
             if (!Result.instance) {

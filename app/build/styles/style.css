@@ -211,16 +211,18 @@ svg {
 }
 
 .select-path {
-  border-right: 1px solid #CCC;
+
   line-height: 60px;
   text-align: center;
   width: 200px;
   height: 60px;
   float: left;
-  margin-right: 15px;
+
 }
 
 .history {
+  padding-left: 15px;
+  border-left: 1px solid #CCC;
   float: left;
 }
 

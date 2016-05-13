@@ -168,8 +168,10 @@ System.register("components/graph/Graph", ["angular2/core", "DataMining/Result",
                   if (i % 2 == 0) {
                     return [];
                   } else {
-                    if (d.node && d.node.info) {
-                      return [d.node.repeatMasker.hits[0]];
+                    if (d.node && d.node.trueDomains && d.node.trueDomains[0]) {
+                      return [d.node.trueDomains[0][0].Lineage, d.node.trueDomains[0].map(function(domain) {
+                        return domain.Domain;
+                      }).join(', ')];
                     } else {
                       return [];
                     }
@@ -177,7 +179,7 @@ System.register("components/graph/Graph", ["angular2/core", "DataMining/Result",
                 }).enter().append('text').attr('y', function(d, i) {
                   return i * 20;
                 }).text(function(d, i) {
-                  return d ? d.key : "";
+                  return d ? d : "";
                 });
                 drag.on('dragstart', function(d) {
                   console.log('dragstart extended');

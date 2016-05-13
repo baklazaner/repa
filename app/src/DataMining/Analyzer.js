@@ -236,7 +236,9 @@ export class Analyzer {
                     });
                 } else {               
                 // size of one
-                    nodes[node1] = strength;
+                    if(strength > 10){
+                        nodes[node1] = strength;
+                    }
                 }
             }
             

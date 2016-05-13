@@ -91,7 +91,6 @@ export class Intro {
         // run analyzer    
         const smartPath = new SmartPath(path);
         const pathToCC = smartPath.getClusterConnectionsPath();
-        // const pathToST = smartPath.getSummaryTablePath();
         const pathToCLSV = smartPath.getClassificationPath();
         const pathToSummary = smartPath.getSummaryPath();
         const pathToRM = smartPath.getRMPath();
@@ -120,7 +119,6 @@ export class Intro {
                 perResult.setSummaryPath(pathToSummary);
                 
                 var result = values[0];
-                // var clusterInfo = values[1];
                 var classification = values[1];
                 var rmTable = values[2];
                 var blastxData = values[3];
@@ -129,7 +127,6 @@ export class Intro {
                 perResult.setRepeatMasker(rmTable);
                 perResult.setClassification(classification);
                 perResult.setResult(result);
-                // perResult.setClusterInfo(clusterInfo);
                
                 console.log('DataMining', values);
                 

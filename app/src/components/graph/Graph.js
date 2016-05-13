@@ -67,12 +67,7 @@ export class Graph {
        
         var force = createForceLayout();
         
-        var drag = force.drag();
-            // drag.on("dragstart", function(d) {
-            //     d.fixed = true; 
-               
-            //     console.log('dragstart', d);
-            // });
+        var drag = force.drag();    
             
         var zoom = d3.behavior.zoom()
             .scaleExtent(settings.zoom.extent);
@@ -279,11 +274,8 @@ export class Graph {
                             if(i%2 == 0){
                                 return [];
                             } else {
-                                if(d.node && d.node.info){                                
-                                    // return d.node.info.filter( (info) => {
-                                    //     return settings.info.priorityKeys.indexOf(info.key) >= 0;
-                                    // });
-                                    return [d.node.repeatMasker.hits[0]];
+                                if(d.node && d.node.trueDomains && d.node.trueDomains[0]){   
+                                    return [ d.node.trueDomains[0][0].Lineage ,d.node.trueDomains[0].map( domain => domain.Domain ).join(', ')];
                                 } else {
                                     return [];
                                 }
@@ -293,7 +285,7 @@ export class Graph {
                     .append('text')
                         .attr('y', function(d,i){ return i*20; }) // height of a text
                         .text( function(d,i){
-                             return d ? d.key : ""; 
+                             return d ? d : ""; 
                         });
                         
                  drag.on('dragstart', function(d) {
