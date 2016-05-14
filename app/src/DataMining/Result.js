@@ -1,3 +1,5 @@
+import {Validation} from 'DataMining/Validation';
+
 var domainHitsThreshold = 10; // min 10 hits, or domain is not registered
 
 class ResultData {
@@ -80,10 +82,14 @@ export class Result {
             // flattern array
             var merged = [].concat.apply([], domains).filter( onlyUnique );
             
+            var validation = new Validation(this);
+            
+            
             r.push({
                 clusters: cluster,
                 domains: merged,
-                classification: cClass
+                classification: cClass,
+                validation: validation.validate(cClass, cluster)
             });
         });    
         this.superClusters = r;
@@ -195,10 +201,7 @@ export class Result {
                         name: name,
                         size: nodes[name],
                         group: group,
-                        info: this.clusterInfo ? this.clusterInfo[name] : undefined, 
-                        // repeatMasker: this.repeatMasker[group],
-                        // domains: this.domains ? this.domains[group] : undefined,
-                        // sortedDomains: this.sortedDomains[group],
+                        info: this.clusterInfo ? this.clusterInfo[name] : undefined,
                         trueDomains: this.getSpecificLineage(index-1),
                         fixed: false                                       
                     });

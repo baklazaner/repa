@@ -1,11 +1,14 @@
-System.register("DataMining/Result", [], function($__export) {
+System.register("DataMining/Result", ["DataMining/Validation"], function($__export) {
   "use strict";
-  var domainHitsThreshold,
+  var Validation,
+      domainHitsThreshold,
       ResultData,
       GraphData,
       Result;
   return {
-    setters: [],
+    setters: [function($__m) {
+      Validation = $__m.Validation;
+    }],
     execute: function() {
       domainHitsThreshold = 10;
       ResultData = function() {
@@ -56,10 +59,12 @@ System.register("DataMining/Result", [], function($__export) {
               var firstNodeRM = $__5.repeatMasker[cluster[0].clIndex - 1];
               var cClass = (firstNodeRM && firstNodeRM.hits && firstNodeRM.hits[0]) ? firstNodeRM.hits[0].key : "N/A";
               var merged = [].concat.apply([], domains).filter(onlyUnique);
+              var validation = new Validation($__5);
               r.push({
                 clusters: cluster,
                 domains: merged,
-                classification: cClass
+                classification: cClass,
+                validation: validation.validate(cClass, cluster)
               });
             });
             this.superClusters = r;

@@ -26,6 +26,7 @@ import {Result} from 'DataMining/Result';
             <span [hidden]="graphAvailable()" class="fake">
             > Graph > Save
             </span>
+            | <a [routerLink]="['Help']">Help</a>
         </nav>
         <hr>
         <router-outlet></router-outlet>
@@ -35,7 +36,8 @@ import {Result} from 'DataMining/Result';
 @RouteConfig([
     { path: '/', redirectTo: ['Intro'] },
     { path:'/intro', name: 'Intro', component: Intro, useAsDefault: true },
-    { path:'/graph', name: 'Graph', component: GraphView }    
+    { path:'/graph', name: 'Graph', component: GraphView },
+    { path: '/help', name: 'Help',  component: GraphView }    
 ])
 
 export class Main {

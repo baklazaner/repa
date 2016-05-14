@@ -59,7 +59,7 @@ System.register("index", ["angular2/core", "angular2/platform/browser", "angular
           return [new Component({
             selector: 'main',
             directives: [Intro, ROUTER_DIRECTIVES],
-            template: "\n        <h1>REPA</h1> \n        <nav>\n            > <a [routerLink]=\"['Intro']\">Intro</a>\n            <span [hidden]=\"!graphAvailable()\">\n            > <a [routerLink]=\"['Graph']\">Graph</a>\n            > <a [routerLink]=\"['Graph']\">Save</a>\n            </span>\n            <span [hidden]=\"graphAvailable()\" class=\"fake\">\n            > Graph > Save\n            </span>\n        </nav>\n        <hr>\n        <router-outlet></router-outlet>\n    "
+            template: "\n        <h1>REPA</h1> \n        <nav>\n            > <a [routerLink]=\"['Intro']\">Intro</a>\n            <span [hidden]=\"!graphAvailable()\">\n            > <a [routerLink]=\"['Graph']\">Graph</a>\n            > <a [routerLink]=\"['Graph']\">Save</a>\n            </span>\n            <span [hidden]=\"graphAvailable()\" class=\"fake\">\n            > Graph > Save\n            </span>\n            | <a [routerLink]=\"['Help']\">Help</a>\n        </nav>\n        <hr>\n        <router-outlet></router-outlet>\n    "
           }), new RouteConfig([{
             path: '/',
             redirectTo: ['Intro']
@@ -71,6 +71,10 @@ System.register("index", ["angular2/core", "angular2/platform/browser", "angular
           }, {
             path: '/graph',
             name: 'Graph',
+            component: GraphView
+          }, {
+            path: '/help',
+            name: 'Help',
             component: GraphView
           }])];
         }});
