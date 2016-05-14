@@ -21,7 +21,7 @@ System.register("DataMining/Validation", [], function($__export) {
             return null;
           },
           validateByModel: function(cluster, model, startNode) {
-            var $__2 = this;
+            var $__3 = this;
             var isValid = false;
             var modelIndex = 0;
             var node;
@@ -44,7 +44,7 @@ System.register("DataMining/Validation", [], function($__export) {
                 }
               }
               if (!found) {
-                return false;
+                return unsuccessful();
               }
             } else {
               console.log('starting at', startNode);
@@ -58,7 +58,7 @@ System.register("DataMining/Validation", [], function($__export) {
               }
               console.log('looking in neighbour');
               var closest = link.to;
-              var domains = $__2.result.getSpecificLineage(closest.clIndex - 1)[0];
+              var domains = $__3.result.getSpecificLineage(closest.clIndex - 1)[0];
               checkDomain(domains);
               if (found) {
                 console.log('found in neighbour');
@@ -66,10 +66,10 @@ System.register("DataMining/Validation", [], function($__export) {
               }
             });
             if (!found) {
-              return false;
+              return unsuccessful();
             }
             if (isValid) {
-              return true;
+              return successful();
             }
             console.log('continue');
             var newModel = model.filter(function(e, i) {
@@ -97,6 +97,15 @@ System.register("DataMining/Validation", [], function($__export) {
                   }
                 }
               }
+            }
+            function unsuccessful() {
+              return {
+                reason: 'Can\'t find ' + model[modelIndex] + ' in order',
+                valid: false
+              };
+            }
+            function successful() {
+              return {valid: true};
             }
           }
         }, {});

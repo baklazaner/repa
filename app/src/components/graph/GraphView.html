@@ -93,7 +93,7 @@
             <td><button (click)="focus(i)" [ngStyle]="{'background-color': color(i) }"><b>SuperCluster{{i+1}}</b></button></td>
             <td>{{group.clusters.length}}</td> 
             <td *ngIf="group.classification">{{group.classification}}</td>
-            <td *ngIf="group.validation !== null"> <b [hidden]="group.validation">invalid</b><b [hidden]="!group.validation">valid</b> </td>
+            <td *ngIf="group.validation !== null"> <b [hidden]="group.validation.valid">{{group.validation.reason}}</b><b [hidden]="!group.validation.valid">valid</b> </td>
             </tr>
         </tbody>
     </table>

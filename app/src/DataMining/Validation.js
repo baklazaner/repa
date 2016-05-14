@@ -62,7 +62,7 @@ export class Validation {
             
             if(!found){
                 // if we haven't found the first one a this point, its invalid
-                return false;
+                return unsuccessful();
             }
             
         } else {
@@ -95,11 +95,11 @@ export class Validation {
         
         if(!found){
             // we haven't found anything in closest neighbours
-            return false;
+            return unsuccessful();
         } 
         
         if(isValid){
-            return true;
+            return successful();
         }
         
         console.log('continue');
@@ -132,6 +132,20 @@ export class Validation {
                }
             }
         }
+        
+        function unsuccessful(){
+            return {
+                reason: 'Can\'t find ' + model[modelIndex] + ' in order',
+                valid : false
+            };
+        }
+        
+        function successful(){
+            return {
+                valid: true
+            };
+        }
+        
     }
     
 }
