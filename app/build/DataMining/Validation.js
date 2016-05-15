@@ -58,11 +58,13 @@ System.register("DataMining/Validation", [], function($__export) {
               }
               console.log('looking in neighbour');
               var closest = link.to;
-              var domains = $__3.result.getSpecificLineage(closest.clIndex - 1)[0];
-              checkDomain(domains);
-              if (found) {
-                console.log('found in neighbour');
-                node = closest;
+              var lineage = $__3.result.getSpecificLineage(closest.clIndex - 1);
+              if (lineage) {
+                checkDomain(lineage[0]);
+                if (found) {
+                  console.log('found in neighbour');
+                  node = closest;
+                }
               }
             });
             if (!found) {

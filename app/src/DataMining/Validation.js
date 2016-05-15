@@ -83,13 +83,18 @@ export class Validation {
             console.log('looking in neighbour');
         
             var closest = link.to;
-            var domains = this.result.getSpecificLineage(closest.clIndex-1)[0];
-            
-            checkDomain(domains); 
-            if(found){
-                console.log('found in neighbour');
-                node = closest;
+            var lineage = this.result.getSpecificLineage(closest.clIndex-1);
+            if(lineage){
+                
+               checkDomain(lineage[0]); 
+               
+                if(found){
+                    console.log('found in neighbour');
+                    node = closest;
+                }
             }
+            
+            
             
         });
         
