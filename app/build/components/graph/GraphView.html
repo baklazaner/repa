@@ -1,4 +1,7 @@
-<h2>Graph View</h2>
+<div>
+    <h2 class="shorten">Graph View</h2>
+    <span class="threshold">Clusters connection threshold <input type="number" /> <button>Redraw</button></span>
+</div>
 <div class="left">
     <graph [hidden]="inDetail">
         <button [hidden]="!extended" (click)="reset()" id="back" > Back </button>

@@ -253,3 +253,12 @@ svg {
   color:  #666;
   cursor: not-allowed;
 }
+
+.shorten {
+  width: 330px;
+  display: inline-block;
+}
+
+.threshold input {
+  text-align: right;
+}

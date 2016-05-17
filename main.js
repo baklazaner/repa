@@ -29,7 +29,7 @@ app.on('ready', function() {
   });
   
   // mainWindow.maximize();
-  mainWindow.toggleDevTools();
+  // mainWindow.toggleDevTools();
   
   // and load the index.html of the app.
   mainWindow.loadUrl('file://' + __dirname + '/app/build/index.html');  
