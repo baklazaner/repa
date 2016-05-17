@@ -115,6 +115,10 @@ export class Validation {
         
         function checkDomain(domains){
             
+            if(!domains){
+                return false;
+            }
+            
             var simpleDomains = domains.map( d => d.Domain );
             console.log('simpleDomains', simpleDomains);
             
@@ -131,7 +135,7 @@ export class Validation {
                    
                    if(modelIndex === (model.length)){
                        console.warn('~~~ MODEL VALID ~~~');
-                       isValid = true;;
+                       isValid = true;
                        return true;
                    }
                }

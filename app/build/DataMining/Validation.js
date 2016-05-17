@@ -79,6 +79,9 @@ System.register("DataMining/Validation", [], function($__export) {
             });
             return this.validateByModel(cluster, newModel, node);
             function checkDomain(domains) {
+              if (!domains) {
+                return false;
+              }
               var simpleDomains = domains.map(function(d) {
                 return d.Domain;
               });
@@ -94,7 +97,6 @@ System.register("DataMining/Validation", [], function($__export) {
                   if (modelIndex === (model.length)) {
                     console.warn('~~~ MODEL VALID ~~~');
                     isValid = true;
-                    ;
                     return true;
                   }
                 }
