@@ -1,4 +1,4 @@
-System.register("components/graph/GraphView", ["angular2/core", "angular2/common", "components/graph/Graph", "DataMining/Result", "components/graph/Settings"], function($__export) {
+System.register("components/graph/GraphView", ["angular2/core", "angular2/common", "components/graph/Graph", "DataMining/Result", "components/graph/Settings", "DataMining/Analyzer"], function($__export) {
   "use strict";
   var Component,
       Directive,
@@ -9,6 +9,7 @@ System.register("components/graph/GraphView", ["angular2/core", "angular2/common
       Graph,
       Result,
       Settings,
+      Analyzer,
       GraphView;
   return {
     setters: [function($__m) {
@@ -25,25 +26,25 @@ System.register("components/graph/GraphView", ["angular2/core", "angular2/common
       Result = $__m.Result;
     }, function($__m) {
       Settings = $__m.Settings;
+    }, function($__m) {
+      Analyzer = $__m.Analyzer;
     }],
     execute: function() {
       GraphView = function() {
         function GraphView(zone) {
           var $__4 = this;
-          var result = Result.getInstance();
+          this.threshold = 0;
           console.log('initiating graph view');
           this.zone = zone;
           this.extended = false;
-          this.groups = result.getSuperClusters();
-          this.info = result.getClusterInfo();
-          this.allRMData = result.getRepeatMasker();
-          this.color = Settings.default().color;
+          this.loadData();
           window.dispatch.on('unfocus.view', function() {
             console.log('unfocusing');
           });
           window.dispatch.on('focus.view', function(clusterIndex) {
             console.log('focusing', clusterIndex);
             $__4.zone.run(function() {
+              var result = Result.getInstance();
               $__4.nodeToIndex = result.nodeToIndex;
               $__4.superCluster = $__4.groups[clusterIndex];
               console.log('superCluster', $__4.superCluster);
@@ -52,6 +53,26 @@ System.register("components/graph/GraphView", ["angular2/core", "angular2/common
           });
         }
         return ($traceurRuntime.createClass)(GraphView, {
+          loadData: function() {
+            var result = Result.getInstance();
+            this.groups = result.getSuperClusters();
+            this.info = result.getClusterInfo();
+            this.allRMData = result.getRepeatMasker();
+            this.color = Settings.default().color;
+            this.analyzer = new Analyzer(result.pathToCC);
+          },
+          recluster: function() {
+            var $__4 = this;
+            console.log('reclustering with threshold', this.threshold);
+            this.analyzer.setThreshold(this.threshold);
+            this.analyzer.process().then(function(values) {
+              console.log('new values', values);
+              var result = Result.getInstance();
+              result.setResult(values);
+              window.dispatch.unfocus();
+              $__4.loadData();
+            });
+          },
           focus: function(clusterIndex) {
             console.log('focusing cluster @', clusterIndex);
             this.inDetail = false;

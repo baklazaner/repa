@@ -154,7 +154,7 @@ export class Analyzer {
     // threshold: number; 
     
     constructor(path){
-        console.log('Analyzer is getting ready');
+        console.log('Analyzer is getting ready', path);
    
         this.limit = 200;
         this.path = path;   
@@ -204,6 +204,7 @@ export class Analyzer {
         
         const limit = this.limit;
         
+        console.log('analyzer threshold');
         const threshold = this.threshold;
         
         const connections = [];

@@ -34,6 +34,7 @@ System.register("DataMining/Result", ["DataMining/Validation"], function($__expo
           this.sortedDomains;
           this.domainsByLineage;
           this.nodeToIndex;
+          this.pathToCC;
         }
         return ($traceurRuntime.createClass)(Result, {
           setResult: function(result) {

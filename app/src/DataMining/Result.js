@@ -37,6 +37,8 @@ export class Result {
         this.sortedDomains;
         this.domainsByLineage;
         this.nodeToIndex;
+        
+        this.pathToCC; // clusterconnections.txt
     }
     
     static getInstance(){

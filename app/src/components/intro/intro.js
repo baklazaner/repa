@@ -125,6 +125,8 @@ export class Intro {
                 perResult.setDomains(blastxData);
                 perResult.setRepeatMasker(rmTable);
                 perResult.setResult(result);
+                
+                perResult.pathToCC = pathToCC;
                
                 console.log('DataMining', values);
                 

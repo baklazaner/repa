@@ -101,8 +101,10 @@ System.register("DataMining/Validation", [], function($__export) {
               }
             }
             function unsuccessful() {
+              var reason = 'Can\'t find ' + model[modelIndex] + ' in order';
+              console.warn('Invalid model!', reason);
               return {
-                reason: 'Can\'t find ' + model[modelIndex] + ' in order',
+                reason: reason,
                 valid: false
               };
             }

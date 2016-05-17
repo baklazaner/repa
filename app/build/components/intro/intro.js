@@ -122,6 +122,7 @@ System.register("components/intro/intro", ["angular2/core", "angular2/router", "
               perResult.setDomains(blastxData);
               perResult.setRepeatMasker(rmTable);
               perResult.setResult(result);
+              perResult.pathToCC = pathToCC;
               console.log('DataMining', values);
               $__3.updateLoading(false);
               $__3.enableMenu();

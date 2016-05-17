@@ -114,7 +114,7 @@ System.register("DataMining/Analyzer", [], function($__export) {
       }();
       Analyzer = function() {
         function Analyzer(path) {
-          console.log('Analyzer is getting ready');
+          console.log('Analyzer is getting ready', path);
           this.limit = 200;
           this.path = path;
           this.threshold = 10;
@@ -144,6 +144,7 @@ System.register("DataMining/Analyzer", [], function($__export) {
           readFile: function(path) {
             var $__6 = this;
             var limit = this.limit;
+            console.log('analyzer threshold');
             var threshold = this.threshold;
             var connections = [];
             var nodes = {};

@@ -4,6 +4,7 @@ import {NgStyle} from 'angular2/common';
 import {Graph} from 'components/graph/Graph';
 import {Result} from 'DataMining/Result';
 import {Settings} from 'components/graph/Settings';
+import {Analyzer} from 'DataMining/Analyzer';
 
 @Component({
     selector: 'graph-view',
@@ -25,24 +26,19 @@ export class GraphView {
     repeatMasker: any;
     domains: any;
     maxHits: number;
+    threshold: number;
     
     constructor(zone: NgZone){
         
-        const result = Result.getInstance();
+        this.threshold = 0; // default value
+        
+      
         
         console.log('initiating graph view');
         this.zone = zone;
         this.extended = false;       
-        this.groups = result.getSuperClusters();
-        this.info = result.getClusterInfo();
-        
-       
-        this.allRMData = result.getRepeatMasker();
-        
-        
-        this.color = Settings.default().color;
-        
-        
+      
+        this.loadData();
         
         window.dispatch.on('unfocus.view', () => {
             console.log('unfocusing');
@@ -54,6 +50,7 @@ export class GraphView {
              
             this.zone.run( () => {
                 
+                const result = Result.getInstance();
                 this.nodeToIndex = result.nodeToIndex;
                 
                 this.superCluster = this.groups[clusterIndex]; 
@@ -62,6 +59,39 @@ export class GraphView {
                 this.extended = true;  
             });
         });
+    }
+    
+    loadData(){
+         const result = Result.getInstance();
+        this.groups = result.getSuperClusters();
+        this.info = result.getClusterInfo();
+        
+       
+        this.allRMData = result.getRepeatMasker();
+        
+        
+        this.color = Settings.default().color;
+        this.analyzer = new Analyzer(result.pathToCC);
+        
+    }
+    
+    recluster(){
+        
+        console.log('reclustering with threshold', this.threshold);
+        this.analyzer.setThreshold(this.threshold);
+        this.analyzer.process().then( (values) => {
+            
+            console.log('new values', values);
+            
+            const result = Result.getInstance();
+            result.setResult(values);            
+            window.dispatch.unfocus();
+            this.loadData();
+            
+        });
+        
+        
+        
     }
     
     // focusing on one super cluster

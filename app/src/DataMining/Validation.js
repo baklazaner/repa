@@ -139,8 +139,12 @@ export class Validation {
         }
         
         function unsuccessful(){
+            
+            var reason = 'Can\'t find ' + model[modelIndex] + ' in order';
+            console.warn('Invalid model!', reason);
+            
             return {
-                reason: 'Can\'t find ' + model[modelIndex] + ' in order',
+                reason: reason,
                 valid : false
             };
         }
